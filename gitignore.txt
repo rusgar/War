@@ -1,0 +1,13 @@
+__pycache__/
+*.pyc
+.venv/
+.env
+fatalities.csv
+logs/
+results/
+.coverage
+coverage.xml
+htmlcov/
+.streamlit/
+.DS_Store
+.vscode/
