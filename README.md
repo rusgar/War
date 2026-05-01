@@ -2,55 +2,103 @@
 
 > **Dataset:** B'Tselem · 11.124 registros · 2000–2023  
 > **Stack:** Python · Streamlit · Plotly · pytest · GitHub Actions  
-> **Equipo:** 4 alumnos · 3 ramas · rotación diaria · releases en vivo
+> **Equipo:** 4 alumnos · 3 ramas · rotación diaria · releases en vivo del profesor
 
 ---
 
-## Lo primero que tenéis que hacer (Día 1, hora 0)
-
-Habéis recibido los archivos **totalmente planos**, sin estructura de carpetas.  
-**Vuestra primera tarea es decidir en equipo cómo organizarlos** y crear la estructura del proyecto vosotros mismos antes de escribir una sola línea de código.
-
-El repo de `main` solo tendrá esto al inicio:
+## Lo que tenéis en este repo (y nada más)
 
 ```
-fatalities.csv
-README.md
-requirements.txt
-.gitignore
-ci.yml           ← copiarlo a .github/workflows/
+main/
+├── fatalities.csv       ← el dataset, no subir cambios sobre él
+├── README.md            ← este archivo
+├── requirements.txt     ← dependencias fijas, no modificar
+└── .gitignore           ← ya configurado
 ```
 
-Todo lo demás lo construís vosotros.
+> El `ci.yml` lo encontráis en `requirements.txt` — tenéis que moverlo vosotros
+> a `.github/workflows/ci.yml` como primera tarea del Día 1.
+
+---
+
+## Lo que tenéis que construir vosotros
+
+Al final del Día 4 vuestro repo debe tener esta estructura:
+
+```
+conflict-dashboard/
+├── fatalities.csv
+├── README.md
+├── requirements.txt
+├── .gitignore
+├── interface/
+│   └── app.py   ← punto de entrada de Streamlit
+│
+├── .github/
+│   └── workflows/
+│       └── ci.yml                ← mover aquí el ci.yml del repo
+│
+├── src/
+│   ├── __init__.py
+│   ├── data_loader.py            ← carga y limpieza del CSV
+│   ├── logger.py                 ← logging estructurado
+│   ├── stats.py                  ← estadísticas descriptivas + exportación JSON
+│   ├── charts.py                 ← todos los gráficos Plotly
+│   ├── filters.py                ← sidebar y lógica de filtrado
+│   └── kpis.py                   ← métricas de cabecera
+│
+├── tests/
+│   ├── test_data_loader.py
+│   ├── test_stats.py
+│   ├── test_charts.py
+│   ├── test_filters.py
+│   ├── test_kpis.py
+│   └── test_integration.py       ← tests entre módulos (rol reviewer)
+│
+├── docs/
+│   ├── DECISIONS.md              ← decisiones de arquitectura del equipo
+│   ├── ARCHITECTURE.md
+│   └── <modulo>.md               ← uno por módulo implementado
+│
+├── logs/
+│   └── dashboard_YYYYMMDD.log    ← generado automáticamente por logger.py
+│
+└── results/
+    └── stats_YYYYMMDD_HHMMSS.json  ← generado por stats.py
+```
+
+**Importante:** la estructura de carpetas la decidís vosotros en equipo el Día 1.
+La de arriba es una propuesta, no es obligatoria. Lo que sí es obligatorio:
+- Todo el código en módulos dentro de una carpeta `src/`
+- Todos los tests en una carpeta `tests/`
+- La app arranca con `streamlit run app.py`(acordaros de estar en interface/)
+- La pipeline CI pasa en verde
 
 ---
 
 ## Las 3 ramas — quién hace qué
 
-| Rama | Responsabilidad | Módulos principales |
+| Rama | Módulos a crear | Responsabilidad |
 |---|---|---|
-| `feature/pipeline` | Carga de datos, limpieza, logging, estadísticas descriptivas | `data_loader.py`, `logger.py`, `stats.py` |
-| `feature/visualization` | Todos los gráficos Plotly | `charts.py` |
-| `feature/ui` | Sidebar, KPIs, layout de la app | `filters.py`, `kpis.py`, `app.py` |
+| `feature/pipeline` | `data_loader.py` · `logger.py` · `stats.py` | Carga, limpieza, logging, estadísticas exportables |
+| `feature/visualization` | `charts.py` | Todos los gráficos Plotly (mínimo 6) |
+| `feature/ui` | `filters.py` · `kpis.py` · `app.py` | Sidebar, KPIs, layout, descarga de datos |
 
-> **4 alumnos, 3 ramas:** en cada sprint hay un alumno que no tiene rama asignada.  
-> Ese alumno hace de **Reviewer**: revisa PRs, escribe tests de integración, actualiza docs.
+**4 alumnos, 3 ramas → siempre hay un Reviewer.**  
+El Reviewer no tiene rama asignada ese día: revisa PRs, escribe `test_integration.py` y actualiza `docs/`.
 
 ---
 
-## Rotación (la decide el equipo el Día 1)
+## Rotación (decidirla el Día 1 y anotarla en DECISIONS.md)
 
-Ejemplo de rotación posible — podéis cambiarla:
+|       | pipeline | visualization | ui | reviewer |
+|-------|----------|---------------|----|----------|
+| Día 1 |          |               |    |          |
+| Día 2 |          |               |    |          |
+| Día 3 |          |               |    |          |
+| Día 4 |          |               |    |          |
 
-|          | pipeline | visualization | ui | reviewer |
-|----------|----------|---------------|----|----------|
-| **Día 1** | A | B | C | D |
-| **Día 2** | D | A | B | C |
-| **Día 3** | C | D | A | B |
-| **Día 4** | B | C | D | A |
-
-Regla: **nadie puede estar dos días seguidos en la misma rama.**  
-El reviewer del día anterior tiene prioridad para elegir rama al día siguiente.
+Regla: nadie repite rama dos días seguidos.
 
 ---
 
@@ -58,101 +106,65 @@ El reviewer del día anterior tiene prioridad para elegir rama al día siguiente
 
 ### Día 1 — Estructura y pipeline base
 
-**Objetivo del día:** la app arranca, los datos cargan, el pipeline CI está verde.
+- [ ] Decidir estructura de carpetas en equipo → documentar en `docs/DECISIONS.md`
+- [ ] Mover `ci.yml` a `.github/workflows/ci.yml`
+- [ ] Crear las 3 ramas, primer commit semántico en cada una
+- [ ] `feature/pipeline`: `data_loader.py` carga el CSV, tests pasan
+- [ ] `feature/visualization`: al menos 1 gráfico real implementado
+- [ ] `feature/ui`: `app.py` arranca con placeholders, sidebar visible
+- [ ] **Reviewer**: verifica que la CI está verde en las 3 ramas
+- [ ] PR al final del día → merge solo si CI verde + 1 review aprobado
 
-- [ ] Decidir estructura de carpetas en equipo (15 min, documentar en `docs/DECISIONS.md`)
-- [ ] Crear repo GitHub, proteger `main` (require PR + 1 review)
-- [ ] Cada uno crea su rama y hace su primer commit semántico
-- [ ] **feature/pipeline:** `data_loader.py` funciona, `logger.py` registra eventos, tests pasan
-- [ ] **feature/ui:** `app.py` arranca con placeholders, `filters.py` skeleton con sidebar vacío
-- [ ] **feature/visualization:** `charts.py` con al menos 1 gráfico real implementado
-- [ ] **Reviewer:** configura CI (`ci.yml`), verifica que la pipeline pasa en todas las ramas
-- [ ] PR al final del día → merge a `main` solo si CI verde + review aprobado
-
-**🔴 Release del profesor al final del Día 1:**  
-Se añadirá una nueva columna al CSV o un requisito nuevo de filtrado.  
-Tendréis que adaptar `data_loader.py` y los filtros.
+🔴 **Release del profesor al final del Día 1** — se añade un requisito nuevo al dataset o al filtrado. Tendréis que adaptar código y hacer PR.
 
 ---
 
 ### Día 2 — Visualizaciones y estadísticas
 
-**Objetivo del día:** dashboard funcional con mínimo 4 gráficos y KPIs visibles.
-
-- [ ] Merge de los PRs del Día 1 → cada uno actualiza su rama desde `main`
-- [ ] **feature/pipeline:** `stats.py` con estadísticas descriptivas exportables (CSV/JSON)
-- [ ] **feature/visualization:** implementar los 6 gráficos, logs de renders
-- [ ] **feature/ui:** KPIs con deltas, sidebar completo con todos los filtros
-- [ ] **Reviewer:** tests de integración (filtros → gráficos no rompen con datos vacíos)
+- [ ] Cada uno actualiza su rama desde `main` (`git rebase origin/main`)
+- [ ] `feature/pipeline`: `stats.py` con estadísticas exportables a JSON
+- [ ] `feature/visualization`: los 6 gráficos implementados
+- [ ] `feature/ui`: KPIs con deltas, sidebar completo, `st.download_button`
+- [ ] **Reviewer**: `test_integration.py` — filtros + gráficos no rompen con datos vacíos
 - [ ] Cobertura de tests ≥ 80% en cada módulo propio
 
-**🔴 Release del profesor al final del Día 2:**  
-Cambio en la firma de una función (ej. `load_data()` recibirá un parámetro nuevo).  
-El cambio romperá algo intencionadamente. Tendréis que arreglarlo y hacer el PR.
+🔴 **Release del profesor al final del Día 2** — cambio en la firma de una función. Romperá algo intencionadamente.
 
 ---
 
-### Día 3 — Calidad, logs y pipeline avanzado
+### Día 3 — Calidad, logs y pipeline robusto
 
-**Objetivo del día:** logs estructurados, exportación de estadísticas, pipeline robusto.
-
-- [ ] **feature/pipeline:** logs con `logging` estándar de Python (nivel INFO/WARNING/ERROR), exportar stats a `results/stats_YYYYMMDD.json`
-- [ ] **feature/visualization:** gráfico adicional propuesto por el equipo (libre elección)
-- [ ] **feature/ui:** tabla explorable con `st.dataframe`, descarga de datos filtrados con `st.download_button`
-- [ ] **Reviewer:** documentación completa en `docs/*.md`, README actualizado
+- [ ] `feature/pipeline`: logs a fichero (`logs/dashboard_YYYYMMDD.log`)
+- [ ] `feature/visualization`: gráfico extra propuesto por el equipo
+- [ ] `feature/ui`: tabla explorable, descarga CSV filtrado
+- [ ] **Reviewer**: documentación completa en `docs/*.md`
 - [ ] Todos los tests pasan, cobertura ≥ 80%
 
-**🔴 Release del profesor al final del Día 3:**  
-Refactor de interfaz: una función cambia de módulo.  
-Tendréis que actualizar imports en toda la app sin romper tests.
+🔴 **Release del profesor al final del Día 3** — refactor de interfaz: una función cambia de módulo. Actualizad imports sin romper tests.
 
 ---
 
 ### Día 4 — Integración final y demo
 
-**Objetivo del día:** app completa, presentación en vivo.
-
 - [ ] Feature freeze a las 10:00 — solo bugfixes
 - [ ] Merge final a `main` — PR del equipo completo
-- [ ] `results/` con las estadísticas exportadas del dataset real
-- [ ] Demo en vivo: cada alumno explica su rama y las decisiones tomadas
-- [ ] **Reto extra:** añadir un gráfico de comparativa entre lo que generó la IA y lo que reescribisteis vosotros (git diff visual)
+- [ ] `results/` con el JSON de estadísticas del dataset real
+- [ ] Demo en vivo: cada alumno explica su rama y decisiones
 
 ---
 
-## Qué debe tener el repo al final
+## Qué debe mostrar el dashboard
 
-```
-conflict-dashboard/
-├── app.py
-├── requirements.txt
-├── .gitignore
-├── fatalities.csv            ← no subir a git (.gitignore)
-├── results/
-│   └── stats_YYYYMMDD.json  ← generado por stats.py
-├── src/
-│   ├── __init__.py
-│   ├── data_loader.py
-│   ├── logger.py
-│   ├── stats.py
-│   ├── charts.py
-│   ├── filters.py
-│   └── kpis.py
-├── tests/
-│   ├── test_data_loader.py
-│   ├── test_stats.py
-│   ├── test_charts.py
-│   ├── test_filters.py
-│   ├── test_kpis.py
-│   └── test_integration.py   ← del reviewer
-├── docs/
-│   ├── DECISIONS.md          ← decisiones de arquitectura del equipo
-│   ├── ARCHITECTURE.md
-│   └── *.md por módulo
-└── .github/
-    └── workflows/
-        └── ci.yml
-```
+1. **KPIs** — total fatalidades, edad media, % menores, años cubiertos, regiones
+2. **Líneas temporales** — fatalidades por año y ciudadanía
+3. **Heatmap mensual** — mes × año
+4. **Histograma de edades** — por ciudadanía
+5. **Sunburst** — ciudadanía → género
+6. **Barras horizontales** — por región
+7. **Treemap** — región → distrito → localización
+8. **Sidebar con filtros** — años, ciudadanía, género, región, killed_by
+9. **Tabla explorable** con descarga CSV
+10. **Botón exportar estadísticas** → JSON en `results/`
 
 ---
 
@@ -165,68 +177,56 @@ test(charts):       añadir o modificar tests
 docs(pipeline):     documentación
 refactor(kpis):     refactor sin cambio de comportamiento
 ci:                 cambios en pipeline
-chore:              tareas de mantenimiento
-```
-
-Ejemplos reales:
-```
-feat(data_loader): add age_group categorical column
-fix(filters): handle empty dataframe in apply_filters
-test(charts): add chart_by_region returns figure assertion
-docs(pipeline): document logger module API
-refactor(stats): extract _group_by_year to helper
-ci: add per-branch coverage threshold check
 ```
 
 ---
 
-## Reglas de uso de IA (importante)
+## Reglas de uso de IA
 
-Podéis usar Claude, OpenCode, Gemini, Arena o cualquier otra IA. Con estas normas:
+Podéis usar Claude, OpenCode, Gemini, Arena o cualquier otra IA:
 
-1. **Todo código generado por IA debe ser revisado y entendido** antes del commit. Si no lo puedes explicar en la demo, no lo subas.
-2. **Los tests los escribís vosotros**, no la IA. Los tests son vuestro contrato con el código.
-3. **Los commits semánticos y los docs son vuestros**. La IA puede sugerir, pero el mensaje del commit lo escribe quien entiende el cambio.
-4. **Está permitido** pedirle a la IA que explique código, sugiera mejoras, genere datos de prueba, proponga nombres de variables.
-5. **No está permitido** hacer copy-paste de la IA sin leer, subir código que no compiláis localmente antes, ni usar la IA para los mensajes de commit.
+✅ Permitido: pedir explicaciones, sugerencias de mejora, datos de prueba, nombres de variables  
+✅ Permitido: generar código y adaptarlo después de entenderlo  
+❌ No permitido: copy-paste sin leer ni ejecutar localmente  
+❌ No permitido: que la IA escriba los mensajes de commit  
+❌ No permitido: subir tests generados por IA sin haberlos revisado
+
+> Si en la demo no puedes explicar una línea de tu código, no debería estar en tu rama.
 
 ---
 
 ## Comandos de referencia
 
 ```bash
-# Setup inicial
-python -m venv .venv && source .venv/bin/activate
+# Setup
+python -m venv .venv && source .venv/bin/activate   # Mac/Linux
+python -m venv .venv && .venv\Scripts\activate       # Windows
 pip install -r requirements.txt
-
-# Tests con cobertura de tu módulo
-pytest tests/test_<tumodulo>.py --cov=src/<tumodulo> --cov-report=term-missing -v
-
-# Tests completos
-pytest tests/ --cov=src --cov-report=term-missing -v
-
-# App en local
-streamlit run app.py
 
 # Crear tu rama
 git checkout main && git pull origin main
-git checkout -b feature/<turама>
+git checkout -b feature/<tu-rama>
 
-# Actualizar tu rama desde main (hacer esto cada mañana)
-git fetch origin
-git rebase origin/main
+# Actualizar rama desde main cada mañana
+git fetch origin && git rebase origin/main
+
+# Tests de tu módulo con cobertura
+pytest tests/test_<modulo>.py --cov=src/<modulo> --cov-report=term-missing -v
+
+# App en local
+streamlit run app.py
 ```
 
 ---
 
 ## Criterios de evaluación
 
-| Criterio | Peso | Cómo se mide |
-|---|---|---|
-| Funcionalidad completa (app arranca, filtros y gráficos funcionan) | 25% | Demo en vivo |
-| Tests con cobertura ≥ 80% por módulo | 20% | `pytest --cov` en CI |
-| Logs y estadísticas exportadas correctamente | 15% | Revisar `results/` |
-| Commits semánticos + docs actualizados | 15% | `git log --oneline` |
-| CI verde en todas las ramas durante los 4 días | 10% | GitHub Actions |
-| Gestión del equipo: rotación, PRs, reviews | 10% | Historial de PRs |
-| Calidad del código (sin duplicación, funciones puras) | 5% | Code review final |
+| Criterio | Peso |
+|---|---|
+| Dashboard funcional en demo (filtros + gráficos + KPIs) | 25% |
+| Tests con cobertura ≥ 80% por módulo | 20% |
+| Logs y JSON de estadísticas generados correctamente | 15% |
+| Commits semánticos + `docs/*.md` actualizados | 15% |
+| CI verde en todas las ramas durante los 4 días | 10% |
+| Gestión del equipo: rotación, PRs, reviews | 10% |
+| Calidad del código (funciones puras, sin duplicación) | 5% |
