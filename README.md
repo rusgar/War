@@ -294,6 +294,26 @@ streamlit run app.py --logger.level=debug
 
 ---
 
+
+## 🗃️ Descripción del Dataset
+
+| Columna | Descripción |
+|---|---|
+| `name` | Nombre de la víctima |
+| `date_of_event` | Fecha del incidente |
+| `age` | Edad |
+| `citizenship` | Palestinian / Israeli / Foreign |
+| `event_location_region` | Región del incidente (West Bank, Gaza Strip, Israel...) |
+| `event_location_district` | Distrito |
+| `gender` | M / F |
+| `type_of_injury` | gunfire / explosion / stabbing... |
+| `ammunition` | live ammunition / missile / bomb... |
+| `killed_by` | Israeli security forces / Palestinian civilians / Israeli civilians... |
+| `took_part_in_the_hostilities` | Yes / No / Unknown |
+
+---
+
+
 ## Criterios de evaluación
 
 | Criterio | Peso |
