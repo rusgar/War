@@ -195,7 +195,7 @@ Podéis usar Claude, OpenCode, Gemini, Arena o cualquier otra IA:
 
 ---
 
-## Comandos de referencia
+## 1 Comandos de referencia
 
 ```bash
 # Setup
@@ -210,11 +210,86 @@ git checkout -b feature/<tu-rama>
 # Actualizar rama desde main cada mañana
 git fetch origin && git rebase origin/main
 
+# Actualizar requirements.txt con tus nuevas dependencias
+pip freeze > requirements.txt
+
+# Instalar una librería específica y actualizar requirements
+pip install plotly pandas && pip freeze > requirements.txt
+
+# Verificar dependencias desactualizadas
+pip list --outdated
+
 # Tests de tu módulo con cobertura
 pytest tests/test_<modulo>.py --cov=src/<modulo> --cov-report=term-missing -v
 
 # App en local
 streamlit run app.py
+```
+---
+
+## 2 Control de versiones avanzado
+
+```bash
+# Ver estado y cambios antes de commitear
+git status
+git diff
+
+# Commit con mensaje descriptivo
+git add .
+git commit -m "feat: descripción clara del cambio"
+
+# Subir rama remota por primera vez
+git push -u origin feature/<tu-rama>
+
+# Subir cambios subsecuentes
+git push
+
+# Ver historial de commits
+git log --oneline --graph --all
+```
+
+---
+
+## 3 Resolución de conflictos (importante)
+
+```bash
+# Si rebase falla, abortar y empezar de nuevo
+git rebase --abort
+
+# Alternativa: merge en lugar de rebase (más seguro)
+git merge origin/main
+
+# Ver conflictos pendientes
+git diff --name-only --diff-filter=U
+
+# Después de resolver conflictos manualmente
+git add .
+git rebase --continue   # si usaste rebase
+# o
+git commit -m "merge: resolver conflictos"  # si usaste merge
+
+```
+
+---
+
+
+##  4 Testing y debugging
+
+```bash
+# Tests con verbose y stop on first failure
+pytest tests/test_<modulo>.py -v -x
+
+# Tests de un test específico
+pytest tests/test_<modulo>.py::test_nombre_funcion -v
+
+# Tests con cobertura y reporte HTML
+pytest tests/test_<modulo>.py --cov=src/<modulo> --cov-report=html
+open htmlcov/index.html  # Mac
+start htmlcov/index.html  # Windows
+
+# Debug mode en Streamlit
+streamlit run app.py --logger.level=debug
+
 ```
 
 ---
