@@ -6,7 +6,7 @@
 
 ## Decision 1 — Estructura de carpetas
 
-**Fecha:** DD/MM/2025  
+**Fecha:** 04/05/2026
 **Participantes:** todos  
 **Decision:**
 

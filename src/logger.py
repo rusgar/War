@@ -1,29 +1,9 @@
-"""
-logger.py
-=========
-Modulo de logging estructurado para el dashboard.
-
-RAMA:    feature/pipeline
-ALUMNO:  El que tenga pipeline ese dia
-TAREA:   Implementar setup_logger() y los helpers de evento.
-
-Por que un modulo de logging propio?
-- Centraliza el formato de todos los logs de la app.
-- Permite activar/desactivar logs por nivel sin tocar cada modulo.
-- Facilita exportar logs a fichero para auditoria.
-
-Commits de referencia:
-  feat(logger): implement setup_logger with file and console handlers
-  feat(logger): add log_filter_applied event helper
-  test(logger): verify logger creates log file on setup
-  docs(logger): update logger.md
-"""
-
 import logging
 import logging.handlers
 from datetime import datetime
-from pathlib import Path
+from pathlib import Path.
 
+# Configuración global definida en el módulo
 LOG_DIR = Path("logs")
 LOG_FORMAT = "%(asctime)s | %(levelname)-8s | %(name)s | %(message)s"
 DATE_FORMAT = "%Y-%m-%d %H:%M:%S"
@@ -60,8 +40,9 @@ def setup_logger(
     >>> log = setup_logger()
     >>> log.info("App iniciada")
     """
-    # TODO (Paso 1): Crear el logger con logging.getLogger(name)
-    # Fijar su nivel con logger.setLevel(level)
+    # (Paso 1): Crear el logger con 
+    logging.getLogger(name)
+    logger.setLevel(level)
 
     # TODO (Paso 2): Crear un StreamHandler con el formato LOG_FORMAT
     # Hint: logging.Formatter(LOG_FORMAT, datefmt=DATE_FORMAT)
