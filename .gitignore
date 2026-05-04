@@ -11,3 +11,4 @@ htmlcov/
 .streamlit/
 .DS_Store
 .vscode/
+__init__.py
