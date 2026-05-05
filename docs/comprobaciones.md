@@ -86,4 +86,19 @@ git push origin su-rama
 
 ````
 
+# Mensaje para vosotros:
+"He integrado todas vuestras ramas en main como solicitasteis. Sin embargo, al probar la aplicación, hay errores de importación porque cada uno trabajó por separado y no coordinasteis la interfaz entre módulos.
+
+### Vuestra tarea ahora es:
+
+- Actualizar vuestra rama local con git merge main
+
+- Resolver los errores de importación en vuestros archivos
+
+- Asegurar que la aplicación funciona correctamente
+
+- Subir las correcciones a vuestras ramas
+
+- Esto es parte normal del trabajo colaborativo con Git."
+
 Fecha de última actualización: 05/05/2026
