@@ -30,9 +30,7 @@ import pandas as pd
 import plotly.express as px
 import plotly.graph_objects as go
 
-from src.logger import log_chart_rendered
-
-log = logging.getLogger(__name__)
+from src.logger import log_chart_rendered, setup_logger, get_chart_logger
 
 # Paleta compartida — colores del heatmap
 PALETTE = {
@@ -98,8 +96,10 @@ def chart_fatalities_over_time(df: pd.DataFrame) -> go.Figure:
             arrowhead=2
         )
 
-    # Loguear el renderizado del gráfico
-    log_chart_rendered(log, "chart_fatalities_over_time", len(df))
+    chart_log = get_chart_logger("Grafico_1_FatalitiesOverTime")
+    log = get_chart_logger("charts")
+    log_chart_rendered(chart_log, "chart_fatalities_over_time", len(df), 100)
+    log_chart_rendered(log, "chart_fatalities_over_time", len(df), 100)
 
     return fig
 
@@ -142,7 +142,10 @@ def chart_monthly_heatmap(df: pd.DataFrame) -> go.Figure:
         yaxis=dict(autorange="reversed")
     )
     
-    log_chart_rendered(log, "chart_monthly_heatmap", len(df))
+    chart_log = get_chart_logger("Grafico_2_MonthlyHeatmap")
+    log = get_chart_logger("charts")
+    log_chart_rendered(chart_log, "chart_monthly_heatmap", len(df), 100)
+    log_chart_rendered(log, "chart_monthly_heatmap", len(df), 100)
     
     return fig
 
@@ -253,9 +256,49 @@ def chart_age_distribution(df: pd.DataFrame) -> go.Figure:
     - Anadir linea vertical en la media: fig.add_vline(x=media, ...)
     - Titulo: "Distribucion de Edades"
     """
-    # TODO: implementar
-    raise NotImplementedError("chart_age_distribution pendiente")
+    # Filtrar edades en rango razonable
+    # Asegurar que haya un log para este gráfico en logs/log_age_dist.log
+    if not log.handlers:
+        import logging as _logging
+        from pathlib import Path
 
+        log_dir = Path("logs")
+        log_dir.mkdir(parents=True, exist_ok=True)
+        log_file = log_dir / "log_age_dist.log"
+        fh = _logging.FileHandler(str(log_file), encoding="utf-8")
+        formatter = _logging.Formatter(
+            "%(asctime)s | %(levelname)-8s | %(name)s | %(message)s",
+            "%Y-%m-%d %H:%M:%S",
+        )
+        fh.setFormatter(formatter)
+        log.addHandler(fh)
+
+    df_plot = df[df["age"].between(0, 110)].copy()
+    df_plot["age"] = pd.to_numeric(df_plot["age"], errors="coerce")
+    df_plot = df_plot.dropna(subset=["age", "citizenship"])
+    df_plot["citizenship"] = df_plot["citizenship"].astype(str)
+
+    # Generar histograma con rug marginal
+    fig = px.histogram(
+        df_plot,
+        x="age",
+        nbins=40,
+        marginal="rug",
+        color="citizenship",
+        color_discrete_map=PALETTE,
+        opacity=0.7,
+    )
+
+    # Añadir linea vertical en la media si hay datos
+    if not df_plot.empty and not df_plot["age"].isna().all():
+        media = df_plot["age"].mean()
+        fig.add_vline(x=media, line_dash="dash", line_color="gray")
+
+    fig.update_layout(title="Distribucion de Edades")
+
+    log_chart_rendered(log, "chart_age_distribution", len(df_plot))
+
+    return fig
 
 # ── Grafico 4 ─────────────────────────────────────────────────────────────────
 
@@ -296,7 +339,7 @@ def chart_gender_breakdown(df: pd.DataFrame) -> go.Figure:
     
     fig.update_traces(
         textinfo="label+percent entry",
-        textfont=dict(size=14, color="white"),
+        textfont=dict(size=24, color="black"),
         marker=dict(line=dict(color="white", width=2)),
         hovertemplate="<b>%{label}</b><br>Registros: %{value}<br>Porcentaje: %{percentEntry}<extra></extra>"
     )
@@ -317,7 +360,10 @@ def chart_gender_breakdown(df: pd.DataFrame) -> go.Figure:
         )
     )
     
-    log_chart_rendered(log, "chart_gender_breakdown", len(df))
+    chart_log = get_chart_logger("Grafico_4_GenderBreakdown")
+    log = get_chart_logger("charts")
+    log_chart_rendered(chart_log, "chart_gender_breakdown", len(df), 100)
+    log_chart_rendered(log, "chart_gender_breakdown", len(df), 100)
     
     return fig
 
@@ -370,8 +416,48 @@ def chart_top_locations(df: pd.DataFrame) -> go.Figure:
     - color_continuous_scale="Reds"
     - Titulo: "Distribucion Geografica"
     """
-    # TODO: implementar
-    raise NotImplementedError("chart_top_locations pendiente")
+    df_plot = df.dropna(subset=["event_location_region"])
+    
+    total = len(df_plot)
+    title = f"Distribución Geográfica ({total:,} registros)"
+    
+    region_colors = {
+    "West Bank": "#000080",
+    "Gaza Strip": "#FC0000",
+    "Israel": "#40E0D0"
+}
+    
+    fig = px.treemap(
+        df_plot,
+        path=[
+            px.Constant("Total"),
+            "event_location_region",
+            "event_location_district",
+            "event_location"
+        ],
+        title=title,
+        color="event_location_region",
+        color_discrete_map=region_colors,
+        branchvalues="total",
+    )
+    
+    fig.update_traces(
+        textinfo="label+value+percent entry",
+        hovertemplate="<b>%{label}</b><br>Registros: %{value}<br>%{percentRoot:.1%}<extra></extra>"
+    )
+    
+    fig.update_layout(
+        font=dict(size=18),
+        title_font=dict(size=22, color="#333"),
+        margin=dict(t=60, l=10, r=10, b=10)
+    )
+    
+    chart_log = get_chart_logger("Grafico_6_TopLocations")
+    log = get_chart_logger("charts")
+    log_chart_rendered(chart_log, "chart_top_locations", len(df), 100)
+    log_chart_rendered(log, "chart_top_locations", len(df), 100)
+    
+    return fig
 
 
 # ── Grafico 7 (reto) ──────────────────────────────────────────────────────────
