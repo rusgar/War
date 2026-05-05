@@ -9,7 +9,7 @@ from typing import Optional
 log = logging.getLogger(__name__)
 
 # Ruta por defecto
-DATA_PATH = Path(__file__).parent.parent / "fatalities.csv"
+DATA_PATH = Path(__file__).parent.parent / "./data/fatalities.csv"
 
 
 def _normalize_columns(df: pd.DataFrame) -> pd.DataFrame: 
@@ -27,6 +27,8 @@ def _apply_type_conversions(df: pd.DataFrame) -> pd.DataFrame:
     df["age"] = pd.to_numeric(df["age"], errors="coerce")
     df["gender"] = df["gender"].map({"M": "Male", "F": "Female"}).fillna("Unknown") 
 
+    return df
+
 def _add_derived_features(df: pd.DataFrame) -> pd.DataFrame: 
     """Genera columnas calculadas (Year, Month, Age Groups)."""
 
@@ -42,6 +44,8 @@ def _add_derived_features(df: pd.DataFrame) -> pd.DataFrame:
         labels=["Minor (0-17)", "Young (18-29)", "Adult (30-44)", "Middle (45-59)", "Senior (60+)"],
         right=True,
     )
+
+    return df
 
 def load_data(path: Path = DATA_PATH) -> pd.DataFrame:
     """
