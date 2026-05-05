@@ -9,7 +9,8 @@ def pytest_collection_modifyitems(session, config, items):
     _test_progress = {}
     
     for item in items:
-        module = item.nodeid.split('::')[0].replace('/', '.').replace('tests.', '')
+        # Extraer nombre del archivo sin extensión
+        module = item.nodeid.split('::')[0].split('/')[-1].replace('.py', '')
         if module not in _test_progress:
             _test_progress[module] = {
                 'logger': setup_logger(name=module, log_to_file=True),
@@ -24,7 +25,7 @@ def pytest_collection_modifyitems(session, config, items):
 def pytest_runtest_logreport(report):
     """Registra el progreso después de cada test."""
     if report.when == 'call' and report.outcome in ('passed', 'failed', 'skipped'):
-        module = report.nodeid.split('::')[0].replace('/', '.').replace('tests.', '')
+        module = report.nodeid.split('::')[0].split('/')[-1].replace('.py', '')
         if module in _test_progress:
             _test_progress[module]['completed'] += 1
             total = _test_progress[module]['total']
