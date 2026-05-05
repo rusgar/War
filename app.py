@@ -14,8 +14,8 @@ import streamlit as st
 
 # Estas importaciones asumen que habeis creado la carpeta src/
 # Adaptad la ruta si vuestra estructura es diferente
-from src.data_loader import load_data
-from src.logger import setup_logger
+from src.data_loader.load_data import load_data
+from src.logger.setup_logger import setup_logger
 from src.filters import render_sidebar, apply_filters
 from src.kpis import render_kpis
 from src.charts import (
@@ -27,8 +27,8 @@ from src.charts import (
     chart_top_locations,
     chart_killed_by,
 )
-from src.stats import compute_descriptive_stats, export_stats_to_json
-
+from src.stats.compute_descriptive_stats import compute_descriptive_stats
+from src.stats.export_stats_to_json import export_stats_to_json
 # ── Configuracion ─────────────────────────────────────────────────────────────
 
 st.set_page_config(

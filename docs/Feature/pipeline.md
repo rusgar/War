@@ -1,39 +1,41 @@
-# Fase 1 - data_loader 
+# Fase 1: data_loader 
 
 ## 1. Modularización de la Limpieza (Funciones Internas)
 Se han extraído las responsabilidades de limpieza en funciones especializadas:
 
-_normalize_columns: Se encarga de estandarizar los nombres de las columnas.
+- _normalize_columns: Se encarga de estandarizar los nombres de las columnas.
 
-Elimina espacios en blanco.
+    - Elimina espacios en blanco.
 
-Convierte a minúsculas.
+    - Convierte a minúsculas.
 
-Sustituye espacios por guiones bajos (snake_case).
+    - Sustituye espacios por guiones bajos (snake_case).
 
-_apply_type_conversions: Gestiona la integridad de los tipos de datos.
+- _apply_type_conversions: Gestiona la integridad de los tipos de datos.
 
-Convierte date_of_event y date_of_death a objetos datetime.
+    - Convierte date_of_event y date_of_death a objetos datetime.
 
-Limpia y convierte la columna age a formato numérico.
+    - Limpia y convierte la columna age a formato numérico.
 
-Estandariza los valores de género (Male, Female, Unknown).
+    - Estandariza los valores de género (Male, Female, Unknown).
 
-_add_derived_features: Genera nuevas columnas para facilitar el análisis posterior.
+- _add_derived_features: Genera nuevas columnas para facilitar el análisis posterior.
 
-Crea las columnas year, month y month_name a partir de la fecha del evento.
+    - Crea las columnas year, month y month_name a partir de la fecha del evento.
 
-Implementa age_group utilizando pd.cut para clasificar registros por rangos de edad (Minor, Young, Adult, etc.).
+    - Implementa age_group utilizando pd.cut para clasificar registros por rangos de edad (Minor, Young, Adult, etc.).
 
 ## 2. Mejoras en la Gestión de Rutas y Logging
-Se actualizó la ruta por defecto a ./data/fatalities.csv para reflejar la estructura del proyecto.
+- Se actualizó la ruta por defecto a ./data/fatalities.csv para reflejar la estructura del proyecto.
 
-Se integró el sistema de logging para informar sobre el inicio de la carga, el número de registros procesados y el estado final de las columnas.
+- Se integró el sistema de logging para informar sobre el inicio de la carga, el número de registros procesados y el estado final de las columnas.
 
 ## 3. Eliminación de Lógica Externa
 Se eliminó la función de estadísticas descriptivas (get_summary_stats) de este módulo. Siguiendo el principio de responsabilidad única, esta lógica se ha trasladado al módulo especializado src/stats.py.
 
 --- 
+
+
 
 # Fase 2: Logger (`src/logger.py`)
 
@@ -63,6 +65,8 @@ Para estandarizar los mensajes en todo el pipeline, se crearon funciones de ayud
 * **Codificación UTF-8**: Se garantiza que los archivos de log soporten caracteres especiales mediante la configuración explícita de la codificación en el `FileHandler`.
 
 --- 
+
+
 
 # Fase 3: Stats (`src/stats.py`)
 

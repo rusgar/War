@@ -16,6 +16,12 @@ cd War
 python -m venv .venv && source .venv/bin/activate   # Mac/Linux
 python -m venv .venv && .venv\Scripts\activate       # Windows
 pip install -r requirements.txt
+
+#Dos maneras de ejecucion
+python main.py
+
+o
+
 streamlit run app.py
 ```
 
@@ -60,8 +66,8 @@ El Reviewer no tiene rama ese día: revisa PRs, completa `test_integration.py` y
 
 |       | `feature/pipeline` | `feature/visualization` | `feature/ui` | Reviewer |
 |-------|-------------------|------------------------|-------------|----------|
-| Día 1 | &nbsp; | &nbsp; | &nbsp; | &nbsp; |
-| Día 2 | &nbsp; | &nbsp; | &nbsp; | &nbsp; |
+| Día 1 | Carlos | &nbsp; | &nbsp; | &nbsp; |
+| Día 2 | Andres y Carlos | &nbsp; | &nbsp; | &nbsp; |
 | Día 3 | &nbsp; | &nbsp; | &nbsp; | &nbsp; |
 | Día 4 | &nbsp; | &nbsp; | &nbsp; | &nbsp; |
 
