@@ -61,28 +61,3 @@ def load_data(path: Path = DATA_PATH) -> pd.DataFrame:
 
     log.info("Dataset limpio. Columnas: %s", df.columns.tolist())
     return df
-
-
-def get_summary_stats(df: pd.DataFrame) -> dict:
-    """
-    Devuelve un diccionario con metricas resumen del dataset.
-
-    Parameters
-    ----------
-    df : pd.DataFrame
-        DataFrame ya cargado con load_data().
-
-    Returns
-    -------
-    dict
-        total_fatalities, date_range, citizenship_counts,
-        avg_age, gender_counts, region_counts.
-    """
-    return {
-        "total_fatalities": len(df),
-        "date_range": (df["date_of_event"].min(), df["date_of_event"].max()),
-        "citizenship_counts": df["citizenship"].value_counts().to_dict(),
-        "avg_age": round(df["age"].mean(), 1),
-        "gender_counts": df["gender"].value_counts().to_dict(),
-        "region_counts": df["event_location_region"].value_counts().to_dict(),
-    }
