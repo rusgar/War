@@ -65,3 +65,25 @@ git merge origin/feature/visualizacion
 git merge origin/feature/ui
 git push origin main
 ````
+
+### Resolucion
+    - Your branch is up to date with 'origin/main'.
+
+- nothing to commit, working tree clean
+- a1086f8 (HEAD -> main, origin/main, origin/HEAD) Actualizar comprobaciones.md con resolución de conflictos
+- 8ef2377 Merge feature/ui - resuelto conflictos aceptando cambios de UI
+7- eb176e Merge remote-tracking branch 'origin/pipeline' merge de la rama pipeline a origen con fecha 05052026 :wq
+- 25d41be Añadir documentación de comprobación de main
+- 1f3fff7 (origin/pipeline) LOGS
+
+## Programadores
+**Cada alumno en su rama debe:**
+````
+
+git checkout su-rama
+git merge main
+git push origin su-rama
+
+````
+
+Fecha de última actualización: 05/05/2026
