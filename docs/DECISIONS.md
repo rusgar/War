@@ -46,3 +46,4 @@
 ## Decisiones futuras
 
 _(Anadir aqui cualquier decision tomada durante el ejercicio con fecha y razon)_
+-se ha creaqdo la carpeta logs para guardar los logs de los tests de los graficos generados en charts.py

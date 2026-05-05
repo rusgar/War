@@ -76,19 +76,16 @@ def main():
 
     # ── Seccion 1: Temporal ───────────────────────────────────────────────────
     st.subheader("📅 Evolución Temporal")
-    col1, col2 = st.columns([2, 1])
 
-    with col1:
-        try:
-            st.plotly_chart(chart_fatalities_over_time(df), use_container_width=True)
-        except NotImplementedError:
-            st.info("⚙️ feature/visualization: chart_fatalities_over_time pendiente")
+    try:
+        st.plotly_chart(chart_fatalities_over_time(df), use_container_width=True)
+    except NotImplementedError:
+        st.info("⚙️ feature/visualization: chart_fatalities_over_time pendiente")
 
-    with col2:
-        try:
-            st.plotly_chart(chart_monthly_heatmap(df), use_container_width=True)
-        except NotImplementedError:
-            st.info("⚙️ feature/visualization: chart_monthly_heatmap pendiente")
+    try:
+        st.plotly_chart(chart_monthly_heatmap(df), use_container_width=True)
+    except NotImplementedError:
+        st.info("⚙️ feature/visualization: chart_monthly_heatmap pendiente")
 
     # ── Seccion 2: Demografía ─────────────────────────────────────────────────
     st.subheader("👥 Demografía")
