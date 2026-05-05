@@ -1,30 +1,9 @@
-"""
-stats.py
-========
-Modulo de estadisticas descriptivas y exportacion de resultados.
-
-RAMA:    feature/pipeline
-ALUMNO:  El que tenga pipeline ese dia
-TAREA:   Implementar las funciones de analisis y exportacion.
-
-El objetivo de este modulo es doble:
-  1. Calcular estadisticas relevantes del dataset (filtrado o completo).
-  2. Exportar esas estadisticas a results/stats_YYYYMMDD.json
-     para que quede registro de cada ejecucion.
-
-Commits de referencia:
-  feat(stats): implement compute_descriptive_stats
-  feat(stats): implement export_stats_to_json
-  feat(stats): add fatalities_by_year_citizenship aggregation
-  test(stats): add test_compute_descriptive_stats with sample data
-  docs(stats): update stats.md
-"""
+#src/stats.py
 
 import json
 import logging
 from datetime import datetime
 from pathlib import Path
-
 import pandas as pd
 
 log = logging.getLogger(__name__)
@@ -35,128 +14,89 @@ RESULTS_DIR = Path("results")
 def compute_descriptive_stats(df: pd.DataFrame) -> dict:
     """
     Calcula estadisticas descriptivas completas sobre el DataFrame.
-
-    Parameters
-    ----------
-    df : pd.DataFrame
-        DataFrame filtrado o completo.
-
-    Returns
-    -------
-    dict
-        Diccionario con las siguientes claves:
-          - total_records (int)
-          - date_range (dict con "from" y "to" como strings ISO)
-          - age_stats (dict: mean, median, std, min, max)
-          - by_citizenship (dict: ciudadania -> conteo)
-          - by_gender (dict: genero -> conteo)
-          - by_year (dict: anio -> conteo)
-          - by_region (dict: region -> conteo)
-          - pct_minors (float): % de menores de 18
-
-    Example
-    -------
-    >>> stats = compute_descriptive_stats(df)
-    >>> stats["total_records"] > 0
-    True
     """
-    # TODO (Paso 1): total_records = len(df)
+    if df.empty:
+        log.warning("Se intentó calcular estadísticas sobre un DataFrame vacío.")
+        return {"total_records": 0}
+    
+    # (Paso 1): total_records
+    total_records = len(df)
 
-    # TODO (Paso 2): date_range con min y max de date_of_event
-    # Hint: df["date_of_event"].min().isoformat() si no es NaT
+    # (Paso 2): date_range (Manejo de NaT)
+    min_date = df["date_of_event"].min()
+    max_date = df["date_of_event"].max()
+    
+    date_range = {
+        "from": min_date.isoformat() if pd.notnull(min_date) else None,
+        "to": max_date.isoformat() if pd.notnull(max_date) else None
+    }
 
-    # TODO (Paso 3): age_stats con df["age"].describe()
-    # Incluir: mean, median (df["age"].median()), std, min, max
-    # Redondear a 1 decimal. Manejar NaN con skipna=True.
+    # (Paso 3): age_stats
+    age_stats = {
+        "mean": round(df["age"].mean(), 1),
+        "median": round(df["age"].median(), 1),
+        "std": round(df["age"].std(), 1),
+        "min": float(df["age"].min()),
+        "max": float(df["age"].max())
+    }
 
-    # TODO (Paso 4): by_citizenship, by_gender, by_year, by_region
-    # Hint: df["citizenship"].value_counts().to_dict()
+    # (Paso 4): Agrupaciones por categorías
+    stats = {
+        "total_records": total_records,
+        "date_range": date_range,
+        "age_stats": age_stats,
+        "by_citizenship": df["citizenship"].value_counts().to_dict(),
+        "by_gender": df["gender"].value_counts().to_dict(),
+        "by_year": df["year"].value_counts().sort_index().to_dict(),
+        "by_region": df["event_location_region"].value_counts().to_dict(),
+    }
 
-    # TODO (Paso 5): pct_minors
-    # Hint: (df["age"] < 18).sum() / len(df) * 100 si len(df) > 0 else 0.0
+    # (Paso 5): pct_minors
+    stats["pct_minors"] = round((df["age"] < 18).sum() / total_records * 100, 2) if total_records > 0 else 0.0
 
-    raise NotImplementedError("compute_descriptive_stats pendiente de implementar")
-
+    return stats
 
 def fatalities_by_year_citizenship(df: pd.DataFrame) -> pd.DataFrame:
-    """
-    Tabla pivot: filas = anio, columnas = ciudadania, valores = conteo.
-
-    Parameters
-    ----------
-    df : pd.DataFrame
-
-    Returns
-    -------
-    pd.DataFrame
-        Tabla pivot lista para mostrar o exportar.
-
-    Hints
-    -----
-    - Agrupa por ["year", "citizenship"] y cuenta.
-    - Pivota con .pivot_table(index="year", columns="citizenship",
-      aggfunc="size", fill_value=0).
-    - Aniade columna "Total" con la suma de cada fila.
-    """
-    # TODO: implementar
-    raise NotImplementedError("fatalities_by_year_citizenship pendiente")
+    """Tabla pivot: filas = año, columnas = ciudadanía.[cite: 4]"""
+    pivot = df.pivot_table(
+        index="year", 
+        columns="citizenship", 
+        aggfunc="size", 
+        fill_value=0
+    )
+    # Añadir columna "Total" por fila[cite: 4]
+    pivot["Total"] = pivot.sum(axis=1)
+    return pivot
 
 
 def export_stats_to_json(stats: dict, output_dir: Path = RESULTS_DIR) -> Path:
-    """
-    Exporta el diccionario de estadisticas a un JSON con timestamp.
+    """Exporta el diccionario de estadísticas a un JSON con timestamp."""
+   
+    # (Paso 1): Crear directorio
+    output_dir.mkdir(parents=True, exist_ok=True)
 
-    El nombre del fichero incluye la fecha: stats_YYYYMMDD_HHMMSS.json
+    # (Paso 2): Construir nombre del fichero
+    timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+    file_path = output_dir / f"stats_{timestamp}.json"
 
-    Parameters
-    ----------
-    stats : dict
-        Diccionario devuelto por compute_descriptive_stats().
-    output_dir : Path
-        Directorio donde guardar el fichero.
+    # (Paso 3 y 4): Escribir fichero
+    with open(file_path, "w", encoding="utf-8") as f:
+        # default=str ayuda con objetos que no son JSON-serializables directamente
+        json.dump(stats, f, ensure_ascii=False, indent=2, default=str)
 
-    Returns
-    -------
-    Path
-        Ruta del fichero creado.
+    log.info("Estadísticas exportadas a: %s", file_path)
+    
+    # (Paso 5): Devolver Path
 
-    Example
-    -------
-    >>> path = export_stats_to_json(stats)
-    >>> path.exists()
-    True
-    """
-    # TODO (Paso 1): output_dir.mkdir(parents=True, exist_ok=True)
-
-    # TODO (Paso 2): Construir nombre con datetime.now().strftime(...)
-
-    # TODO (Paso 3): json.dumps(stats, ensure_ascii=False, indent=2, default=str)
-    # El default=str maneja fechas y otros tipos no serializables
-
-    # TODO (Paso 4): Escribir fichero y hacer log.info con la ruta
-
-    # TODO (Paso 5): Devolver el Path del fichero creado
-
-    raise NotImplementedError("export_stats_to_json pendiente de implementar")
+    return file_path
 
 
 def load_latest_stats(results_dir: Path = RESULTS_DIR) -> dict | None:
-    """
-    Carga el fichero de stats mas reciente del directorio results/.
-
-    Parameters
-    ----------
-    results_dir : Path
-
-    Returns
-    -------
-    dict | None
-        Diccionario de stats o None si no hay ningun fichero.
-
-    Hints
-    -----
-    - Usar sorted(results_dir.glob("stats_*.json")) y coger el ultimo.
-    - json.loads(path.read_text(encoding="utf-8"))
-    """
-    # TODO: implementar
-    raise NotImplementedError("load_latest_stats pendiente")
+    """Carga el fichero de stats más reciente.[cite: 4]"""
+    files = sorted(results_dir.glob("stats_*.json"))
+    if not files:
+        return None
+    
+    latest_file = files[-1]
+    with open(latest_file, "r", encoding="utf-8") as f:
+        return json.load(f)
