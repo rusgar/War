@@ -23,7 +23,7 @@ import pandas as pd
 import pytest
 
 # Importaciones que iran activandose segun avance el ejercicio
-from src.data_loader import load_data
+from src.data_loader.load_data import load_data
 from src.filters import apply_filters
 
 
