@@ -3,7 +3,7 @@
 import logging
 import logging.handlers
 from datetime import datetime
-from pathlib import Path.
+from pathlib import Path
 
 # Configuración global definida en el módulo
 LOG_DIR = Path("logs")
@@ -24,11 +24,11 @@ def setup_logger(
     logger = logging.getLogger(name)
     logger.setLevel(level)
 
+    # Formateador común para todos los handlers[cite: 3]
+    # Al definirlo así, el editor ya "detecta" la variable formatter
+    formatter = logging.Formatter(LOG_FORMAT, datefmt=DATE_FORMAT)
     # Evitar duplicar handlers si se llama varias veces a la función
     if not logger.handlers:
-        # Formateador común para todos los handlers[cite: 3]
-        # Al definirlo así, el editor ya "detecta" la variable formatter
-        formatter = logging.Formatter(LOG_FORMAT, datefmt=DATE_FORMAT)
 
     # (Paso 2): Crear un StreamHandler para la consola 
         console_handler = logging.StreamHandler()
@@ -37,25 +37,30 @@ def setup_logger(
    
 
    # (Paso 3): Si log_to_file es True, configurar archivo
+    # --- Configuración de Archivo ---
+        if log_to_file:
+            try:
 
-    # Crear LOG_DIR si no existe 
-    LOG_DIR.mkdir(parents=True, exist_ok=True)
+                # Crear LOG_DIR si no existe 
+                LOG_DIR.mkdir(parents=True, exist_ok=True)
 
-    # - Nombrar el fichero: dashboard_YYYYMMDD.log 
-    today = datetime.now().strftime("%Y%m%d")
-    log_file = LOG_DIR / f"{name}_{today}.log" 
+                # - Nombrar el fichero: dashboard_YYYYMMDD.log 
+                today = datetime.now().strftime("%Y%m%d")
+                log_file = LOG_DIR / f"{name}_{today}.log" 
 
-    # Crear logging.FileHandler
-    file_handler = logging.FileHandler(log_file, encoding="utf-8") 
-    file_handler.setFormatter(formatter)
+                # Crear logging.FileHandler
+                file_handler = logging.FileHandler(log_file, encoding="utf-8") 
+                file_handler.setFormatter(formatter)
 
-    # Añadir handler de archivo
-    logger.addHandler(file_handler)
+                # Añadir handler de archivo
+                logger.addHandler(file_handler)
 
-    # (Paso 4 continuación): Añadir handler de consola y devolver[cite: 2]
-    logger.addHandler(console_handler)
-
-    return logger
+                # # (Paso 4 continuación): Añadir handler de consola y devolver[cite: 2]
+                # logger.addHandler(console_handler)
+            except Exception as e:
+                # Si falla la creación del archivo, al menos lo notificamos en consola
+                print(f"Error al configurar el archivo de log: {e}")
+        return logger
 
 
 def log_data_loaded(log: logging.Logger, n_rows: int, path: str) -> None:
