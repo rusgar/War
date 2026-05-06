@@ -4,6 +4,7 @@ __pycache__/
 .env
 results/
 .coverage
+logs/
 coverage.xml
 htmlcov/
 .streamlit/

@@ -17,7 +17,7 @@ Commits de referencia:
 import pandas as pd
 import pytest
 
-from src.filters import apply_filters
+from src.filters.apply_filters import apply_filters
 
 
 @pytest.fixture
@@ -45,37 +45,58 @@ def no_filters():
 class TestApplyFilters:
 
     def test_no_filters_returns_all_rows(self, sample_df, no_filters):
-        pytest.skip("TODO: implementar")
+        result = apply_filters(sample_df, no_filters)
+        assert len(result) == len(sample_df)
 
     def test_year_range_filters_correctly(self, sample_df):
-        pytest.skip("TODO: implementar")
+        filters = {"year_range": (2000, 2010), "citizenship": [], "gender": [], "region": [], "killed_by": []}
+        result = apply_filters(sample_df, filters)
+        assert len(result) == 3
+        assert all((2000 <= y <= 2010) for y in result["year"])
 
     def test_year_range_excludes_outside(self, sample_df):
-        pytest.skip("TODO: implementar")
+        filters = {"year_range": (2005, 2005), "citizenship": [], "gender": [], "region": [], "killed_by": []}
+        result = apply_filters(sample_df, filters)
+        assert len(result) == 1
+        assert result["year"].iloc[0] == 2005
 
     def test_citizenship_single(self, sample_df, no_filters):
-        pytest.skip("TODO: implementar")
+        filters = {"year_range": None, "citizenship": ["Palestinian"], "gender": [], "region": [], "killed_by": []}
+        result = apply_filters(sample_df, filters)
+        assert len(result) == 3
+        assert all(c == "Palestinian" for c in result["citizenship"])
 
     def test_citizenship_multiple(self, sample_df, no_filters):
-        pytest.skip("TODO: implementar")
+        filters = {"year_range": None, "citizenship": ["Palestinian", "Israeli"], "gender": [], "region": [], "killed_by": []}
+        result = apply_filters(sample_df, filters)
+        assert len(result) == 5
 
     def test_gender_filter(self, sample_df, no_filters):
-        pytest.skip("TODO: implementar")
+        filters = {"year_range": None, "citizenship": [], "gender": ["Male"], "region": [], "killed_by": []}
+        result = apply_filters(sample_df, filters)
+        assert len(result) == 3
+        assert all(g == "Male" for g in result["gender"])
 
     def test_region_filter(self, sample_df, no_filters):
-        pytest.skip("TODO: implementar")
+        filters = {"year_range": None, "citizenship": [], "gender": [], "region": ["West Bank"], "killed_by": []}
+        result = apply_filters(sample_df, filters)
+        assert len(result) == 3
 
     def test_killed_by_filter(self, sample_df, no_filters):
-        pytest.skip("TODO: implementar")
+        filters = {"year_range": None, "citizenship": [], "gender": [], "region": [], "killed_by": ["Israeli security forces"]}
+        result = apply_filters(sample_df, filters)
+        assert len(result) == 3
 
     def test_combined_filters(self, sample_df):
-        # year_range=(2000,2010) + citizenship=["Palestinian"] -> 2 filas
-        pytest.skip("TODO: implementar")
+        filters = {"year_range": (2000, 2010), "citizenship": ["Palestinian"], "gender": [], "region": [], "killed_by": []}
+        result = apply_filters(sample_df, filters)
+        assert len(result) == 2
 
     def test_no_match_returns_empty_df(self, sample_df):
-        pytest.skip("TODO: implementar")
+        filters = {"year_range": (1900, 1950), "citizenship": [], "gender": [], "region": [], "killed_by": []}
+        result = apply_filters(sample_df, filters)
+        assert len(result) == 0
 
-    # Estos dos pasan desde el DIA 1 sin implementar nada
     def test_always_returns_dataframe(self, sample_df, no_filters):
         result = apply_filters(sample_df, no_filters)
         assert isinstance(result, pd.DataFrame)
@@ -86,3 +107,9 @@ class TestApplyFilters:
                                    "citizenship": [], "gender": [],
                                    "region": [], "killed_by": []})
         assert len(sample_df) == original_len
+
+    def test_handles_nan_ages(self):
+        df = pd.DataFrame({"age": [25, None, 30], "citizenship": ["Palestinian"]*3})
+        filters = {"year_range": None, "citizenship": ["Palestinian"], "gender": [], "region": [], "killed_by": []}
+        result = apply_filters(df, filters)
+        assert len(result) == 3
