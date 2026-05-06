@@ -16,8 +16,9 @@ import streamlit as st
 # Adaptad la ruta si vuestra estructura es diferente
 from src.data_loader.load_data import load_data
 from src.logger.setup_logger import setup_logger
-from src.filters import render_sidebar, apply_filters
-from src.kpis import render_kpis
+from src.filters.render_sidebar import render_sidebar
+from src.filters.apply_filters import  apply_filters
+from src.kpis.render_kpis import render_kpis
 
 from src.charts.chart_fatalities_over_time import chart_fatalities_over_time
 from src.charts.chart_age_distribution import chart_age_distribution
@@ -29,6 +30,7 @@ from src.charts.chart_gender_breakdown import chart_gender_breakdown
 from src.charts.chart_scatter_3d import chart_scatter_3d
 from src.stats.compute_descriptive_stats import compute_descriptive_stats
 from src.stats.export_stats_to_json import export_stats_to_json
+
 # ── Configuracion ─────────────────────────────────────────────────────────────
 
 st.set_page_config(
