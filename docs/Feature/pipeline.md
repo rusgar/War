@@ -1,5 +1,62 @@
-# Fase 1: data_loader 
+# Fase 1: data_loader ^[carlos] 
 
+
+
+## 0. Estructura [Carlos] 
+
+```
+C:.
+│   app.py
+│   main.py
+│   README.md
+│   requirements.txt
+│   
+├───.github
+│   └───workflows
+│           ci.yml
+├───data
+│       fatalities.csv
+│       
+├───docs
+│   │   DECISIONS.md
+│   │   
+│   └───Feature
+│           pipeline.md
+│           
+├───logs
+├───results
+├───src
+│   │   charts.py
+│   │   config.py
+│   │   filters.py
+│   │   kpis.py
+│   │   __init__.py
+│   ├───data_loader
+│   │   │   load_data.py
+│   │   │   _add_derived_features.py
+│   │   │   _apply_type_conversions.py
+│   │   └───_normalize_columns.py
+│   ├───logger
+│   │   │   log_chart_rendered.py
+│   │   │   log_data_loaded.py
+│   │   │   log_filter_applied.py
+│   │   └───setup_logger.py
+│   └───stats
+│       │   compute_descriptive_stats.py
+│       │   export_stats_to_json.py
+│       │   fatalities_by_year_citizenship.py
+│       └───load_latest_stats.py
+└───tests
+    │   test_charts.py
+    │   test_data_loader.py
+    │   test_filters.py
+    │   test_integration.py
+    │   test_kpis.py
+    │   test_logger.py
+    │   test_stats.py
+    └───__init__.py
+
+```
 ## 1. Modularización de la Limpieza (Funciones Internas)
 Se han extraído las responsabilidades de limpieza en funciones especializadas:
 
@@ -34,7 +91,6 @@ Se han extraído las responsabilidades de limpieza en funciones especializadas:
 Se eliminó la función de estadísticas descriptivas (get_summary_stats) de este módulo. Siguiendo el principio de responsabilidad única, esta lógica se ha trasladado al módulo especializado src/stats.py.
 
 --- 
-
 
 
 # Fase 2: Logger (`src/logger.py`)
@@ -99,3 +155,19 @@ El módulo garantiza que los resultados del análisis queden registrados de form
 * **`load_latest_stats`**: Implementación de un buscador de archivos que identifica y carga automáticamente el último reporte estadístico generado, permitiendo retomar análisis previos sin recalcular.
 
 ---
+
+# Fase 4: Modularizacion (data_logger, logger y stats) [Andres]
+Modularizacion de data_logger.py, logger.py y stats.py siguiendo el principio SRP
+### 1. Separacion de responsabilidades
+
+De ``data_logger.py`` se creo la carpeta ``data_loader`` con los archivos ``load_data.py``, ``_add_derived_features.py``, ``_apply_type_conversions.py``, ``_normalize_columns.py``
+
+De ``logger.py`` se creo la carpeta logger con los archivos ``log_chart_rendered.py``, ``log_data_loaded.py``, ``log_filter_applied.py``, ``setup_logger.py``
+
+De ``stats.py`` se creo la carpeta ``stats`` con los archivos ``compute_descriptive_stats.py``, ``export_stats_to_json.py``, ``fatalities_by_year_citizenship.py``, ``load_latest_stats.py``
+
+### 2. Implementacion de un ``config.py``
+Un archivo de configuracion ``src/config.py`` para unificar las diferentes configuraciones de LOG y de DATA.
+
+### 3. Fix de importaciones de los Tests
+

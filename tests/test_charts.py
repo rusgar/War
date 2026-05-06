@@ -20,6 +20,7 @@ import pytest
 import plotly.graph_objects as go
 
 from src.charts import (
+from charts import (
     chart_fatalities_over_time,
     chart_monthly_heatmap,
     chart_age_distribution,
@@ -50,31 +51,45 @@ def small_df():
 class TestChartFatalitiesOverTime:
 
     def test_returns_figure(self, small_df):
-        pytest.skip("TODO: implementar")
+        fig = chart_fatalities_over_time(small_df)
+        assert isinstance(fig, go.Figure)
 
     def test_has_title(self, small_df):
-        pytest.skip("TODO: implementar")
+        fig = chart_fatalities_over_time(small_df)
+        assert fig.layout.title.text is not None
 
     def test_has_traces(self, small_df):
-        pytest.skip("TODO: implementar")
+        fig = chart_fatalities_over_time(small_df)
+        assert len(fig.data) > 0
 
-    # Pasa desde el Dia 1 - no tocar
-    def test_raises_not_implemented(self):
-        with pytest.raises(NotImplementedError):
-            chart_fatalities_over_time(pd.DataFrame({"year": [], "citizenship": []}))
+    def test_has_citizenship_lines(self, small_df):
+        fig = chart_fatalities_over_time(small_df)
+        assert len(fig.data) >= 1
+
+    def test_empty_dataframe(self):
+        df = pd.DataFrame({"year": [], "citizenship": []})
+        fig = chart_fatalities_over_time(df)
+        assert isinstance(fig, go.Figure)
 
 
 class TestChartMonthlyHeatmap:
 
     def test_returns_figure(self, small_df):
-        pytest.skip("TODO: implementar")
+        fig = chart_monthly_heatmap(small_df)
+        assert isinstance(fig, go.Figure)
 
     def test_has_title(self, small_df):
-        pytest.skip("TODO: implementar")
+        fig = chart_monthly_heatmap(small_df)
+        assert fig.layout.title.text is not None
 
-    def test_raises_not_implemented(self):
-        with pytest.raises(NotImplementedError):
-            chart_monthly_heatmap(pd.DataFrame({"year": [], "month": []}))
+    def test_has_heatmap_trace(self, small_df):
+        fig = chart_monthly_heatmap(small_df)
+        assert len(fig.data) > 0
+
+    def test_empty_dataframe(self):
+        df = pd.DataFrame({"year": [], "month": []})
+        fig = chart_monthly_heatmap(df)
+        assert isinstance(fig, go.Figure)
 
 
 class TestChartAgeDistribution:
@@ -89,19 +104,82 @@ class TestChartAgeDistribution:
     def test_raises_not_implemented(self):
         with pytest.raises(NotImplementedError):
             chart_age_distribution(pd.DataFrame({"age": [], "citizenship": []}))
+            
+    def test_has_title(self, small_df):
+        fig = chart_age_distribution(small_df)
+        assert fig.layout.title is not None
+
+    def test_has_traces(self, small_df):
+        fig = chart_age_distribution(small_df)
+        assert len(fig.data) > 0
+
+    def test_handles_empty_df(self):
+        df = pd.DataFrame({"age": [], "citizenship": []})
+        fig = chart_age_distribution(df)
+        assert isinstance(fig, go.Figure)
+
+    def test_filters_invalid_ages(self):
+        df = pd.DataFrame(
+            {"age": [25, 150, -5, 30], "citizenship": ["Palestinian"] * 4}
+        )
+        fig = chart_age_distribution(df)
+        assert isinstance(fig, go.Figure)
+
+    def test_creates_log_file(self):
+        import logging
+        from pathlib import Path
+
+        log_path = Path("logs/log_age_dist.log")
+        for h in logging.getLogger("charts").handlers[:]:
+            h.close()
+            logging.getLogger("charts").removeHandler(h)
+        logging.getLogger("charts").setLevel(logging.DEBUG)
+        df = pd.DataFrame({"age": [25, 30], "citizenship": ["Palestinian"] * 2})
+        chart_age_distribution(df)
+        assert log_path.exists()
+
+    def test_log_contains_chart_name(self):
+        import logging
+        from pathlib import Path
+
+        log_path = Path("logs/log_age_dist.log")
+        for h in logging.getLogger("charts").handlers[:]:
+            h.close()
+            logging.getLogger("charts").removeHandler(h)
+        logging.getLogger("charts").setLevel(logging.DEBUG)
+        df = pd.DataFrame({"age": [25, 30], "citizenship": ["Palestinian"] * 2})
+        chart_age_distribution(df)
+        content = log_path.read_text(encoding="utf-8")
+        assert "chart_age_distribution" in content
 
 
 class TestChartGenderBreakdown:
 
     def test_returns_figure(self, small_df):
-        pytest.skip("TODO: implementar")
+        fig = chart_gender_breakdown(small_df)
+        assert isinstance(fig, go.Figure)
 
     def test_has_title(self, small_df):
-        pytest.skip("TODO: implementar")
+        fig = chart_gender_breakdown(small_df)
+        assert fig.layout.title.text is not None
 
-    def test_raises_not_implemented(self):
-        with pytest.raises(NotImplementedError):
-            chart_gender_breakdown(pd.DataFrame({"citizenship": [], "gender": []}))
+    def test_title_contains_total(self, small_df):
+        fig = chart_gender_breakdown(small_df)
+        assert "registros" in fig.layout.title.text.lower()
+
+    def test_has_sunburst_trace(self, small_df):
+        fig = chart_gender_breakdown(small_df)
+        assert len(fig.data) > 0
+
+    def test_handles_no_gender(self):
+        df = pd.DataFrame({"citizenship": ["Palestinian"], "gender": [None]})
+        fig = chart_gender_breakdown(df)
+        assert isinstance(fig, go.Figure)
+
+    def test_empty_dataframe(self):
+        df = pd.DataFrame({"citizenship": [], "gender": []})
+        fig = chart_gender_breakdown(df)
+        assert isinstance(fig, go.Figure)
 
 
 class TestChartByRegion:
@@ -120,16 +198,38 @@ class TestChartByRegion:
 class TestChartTopLocations:
 
     def test_returns_figure(self, small_df):
-        pytest.skip("TODO: implementar")
+        fig = chart_top_locations(small_df)
+        assert isinstance(fig, go.Figure)
 
     def test_has_title(self, small_df):
-        pytest.skip("TODO: implementar")
+        fig = chart_top_locations(small_df)
+        assert fig.layout.title.text is not None
 
-    def test_raises_not_implemented(self):
-        with pytest.raises(NotImplementedError):
-            chart_top_locations(pd.DataFrame({
-                "event_location_region": [], "event_location_district": [], "event_location": []
-            }))
+    def test_title_contains_total(self, small_df):
+        fig = chart_top_locations(small_df)
+        assert "registros" in fig.layout.title.text.lower()
+
+    def test_has_treemap_trace(self, small_df):
+        fig = chart_top_locations(small_df)
+        assert len(fig.data) > 0
+
+    def test_handles_null_region(self):
+        df = pd.DataFrame({
+            "event_location_region": [None, "West Bank"],
+            "event_location_district": ["Jenin", "Hebron"],
+            "event_location": ["Jenin", "Hebron"]
+        })
+        fig = chart_top_locations(df)
+        assert isinstance(fig, go.Figure)
+
+    def test_empty_dataframe(self):
+        df = pd.DataFrame({
+            "event_location_region": [], 
+            "event_location_district": [], 
+            "event_location": []
+        })
+        fig = chart_top_locations(df)
+        assert isinstance(fig, go.Figure)
 
 
 class TestChartKilledBy:

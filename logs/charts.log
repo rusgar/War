@@ -1,0 +1,9 @@
+2026-05-05 13:31:00 | INFO     | charts | CHART_RENDERED | chart=chart_fatalities_over_time | rows_used=6 | progress=100%
+2026-05-05 13:31:00 | INFO     | charts | CHART_RENDERED | chart=chart_fatalities_over_time | rows_used=6 | progress=100%
+2026-05-05 13:31:00 | INFO     | charts | CHART_RENDERED | chart=chart_fatalities_over_time | rows_used=6 | progress=100%
+2026-05-05 13:31:00 | INFO     | charts | CHART_RENDERED | chart=chart_fatalities_over_time | rows_used=6 | progress=100%
+2026-05-05 13:31:00 | INFO     | charts | CHART_RENDERED | chart=chart_fatalities_over_time | rows_used=0 | progress=100%
+2026-05-05 13:40:34 | INFO     | charts | CHART_RENDERED | chart=chart_fatalities_over_time | rows_used=11124 | progress=100%
+2026-05-05 13:40:34 | INFO     | charts | CHART_RENDERED | chart=chart_monthly_heatmap | rows_used=11124 | progress=100%
+2026-05-05 13:47:08 | INFO     | charts | CHART_RENDERED | chart=chart_fatalities_over_time | rows_used=11124 | progress=100%
+2026-05-05 13:47:08 | INFO     | charts | CHART_RENDERED | chart=chart_monthly_heatmap | rows_used=11124 | progress=100%
