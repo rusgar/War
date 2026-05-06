@@ -1,6 +1,7 @@
 # Documentación de Errores y Correcciones post-Merge
-
-**Fecha:** 06/05/2026
+**Autor:** ANGEL ECHENIQUE (Autor / verificador)
+**Fecha:** MIRCOLES 06/05/2026  
+**Hora:** 10:00am.
 
 ## Contexto
 

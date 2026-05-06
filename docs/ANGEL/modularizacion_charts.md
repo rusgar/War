@@ -1,6 +1,7 @@
 # Documentación Completa: Modularización Charts
-
-**Fecha:** 06/05/2026
+**Autor:** ANGEL ECHENIQUE (Autor / verificacion)
+**Fecha:** MIRCOLES 06/05/2026  
+**Hora:** 10:30am.
 **Objetivo:** Documentar TODO el proceso de modularización de charts.py
 
 ---
