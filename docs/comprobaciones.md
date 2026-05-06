@@ -102,3 +102,44 @@ git push origin su-rama
 - Esto es parte normal del trabajo colaborativo con Git."
 
 Fecha de última actualización: 05/05/2026
+
+---
+---
+
+
+# 📢 Actualización para alumnos: Sincronizar vuestras ramas
+
+**⚠️ IMPORTANTE:** Ejecutad estos comandos HOY para tener los últimos cambios (`.gitignore` actualizado, limpieza de logs, etc.)
+
+## 🔧 Comandos según vuestra rama
+
+### Si trabajáis en `feature/visualizacion`:
+```bash
+git checkout feature/visualizacion
+git pull origin feature/visualizacion --rebase
+
+### Si trabajáis en feature/ui:
+
+git checkout feature/ui
+git pull origin feature/ui --rebase
+
+### Si trabajáis en pipeline:
+
+git checkout pipeline
+git pull origin pipeline --rebase
+
+```
+
+## Qué veréis durante el proceso
+- Antes de ejecutar los comandos:
+git status
+### Veréis: "Your branch is behind 'origin/...' by X commits"
+
+## Después del git pull:
+✅ Archivo .gitignore actualizado (ignora logs)
+
+✅ Limpieza de archivos .log del repositorio
+
+✅ Últimos cambios integrados desde integration
+
+Fecha de última actualización: 06/05/2026
