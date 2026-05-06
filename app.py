@@ -17,7 +17,7 @@ import streamlit as st
 from src.data_loader.load_data import load_data
 from src.logger.setup_logger import setup_logger
 from src.filters import render_sidebar, apply_filters
-from src.kpis import render_kpis
+from src.kpis.kpis import render_kpis
 from src.charts import (
     chart_fatalities_over_time,
     chart_monthly_heatmap,

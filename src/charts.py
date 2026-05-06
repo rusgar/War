@@ -30,8 +30,8 @@ import pandas as pd
 import plotly.express as px
 import plotly.graph_objects as go
 
-from src.logger import log_chart_rendered, setup_logger, get_chart_logger
-
+from src.logger.log_chart_rendered import log_chart_rendered
+from src.logger.get_chart_logger import get_chart_logger
 # Paleta compartida — colores del heatmap
 PALETTE = {
     "Palestinian": "#04FF04",      # Verde (del heatmap)
@@ -227,7 +227,7 @@ def chart_scatter_3d(df: pd.DataFrame) -> go.Figure:
     )
 
     fig.update_traces(marker=dict(size=3, opacity=0.7))
-
+    log = get_chart_logger("charts")
     log_chart_rendered(log, "chart_scatter_3d", len(df_plot))
 
     return fig
@@ -258,6 +258,9 @@ def chart_age_distribution(df: pd.DataFrame) -> go.Figure:
     """
     # Filtrar edades en rango razonable
     # Asegurar que haya un log para este gráfico en logs/log_age_dist.log
+
+    log = get_chart_logger("charts")
+    
     if not log.handlers:
         import logging as _logging
         from pathlib import Path

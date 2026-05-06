@@ -25,6 +25,8 @@ import logging
 import pandas as pd
 import streamlit as st
 
+from src.logger.log_filter_applied import log_filter_applied
+
 log = logging.getLogger(__name__)
 
 
@@ -47,24 +49,35 @@ def render_sidebar(df: pd.DataFrame) -> dict:
     st.sidebar.markdown("---")
 
     # TODO (Paso 1): Slider de anio
-    # min_year = int(df["year"].min())
-    # max_year = int(df["year"].max())
-    # year_range = st.sidebar.slider("Rango de anos", min_year, max_year, (min_year, max_year))
-    year_range = None  # reemplazar
+    min_year = int(df["year"].min())
+    max_year = int(df["year"].max())
+    year_range = st.sidebar.slider("Rango de anos", min_year, max_year, (min_year, max_year))
 
     st.sidebar.markdown("---")
 
     # TODO (Paso 2): Multiselect ciudadania
-    citizenship = None  # reemplazar
+    citizenship = st.sidebar.multiselect(
+        "Ciudadania",
+        sorted(df["citizenship"].dropna().unique())
+    )
 
     # TODO (Paso 3): Multiselect genero
-    gender = None  # reemplazar
+    gender = st.sidebar.multiselect(
+        "Genero",
+        sorted(df["gender"].dropna().unique())
+    )
 
     # TODO (Paso 4): Multiselect region
-    region = None  # reemplazar
+    region = st.sidebar.multiselect(
+        "Region",
+        sorted(df["event_location_region"].dropna().unique())
+    )
 
     # TODO (Paso 5): Multiselect killed_by
-    killed_by = None  # reemplazar
+    killed_by = st.sidebar.multiselect(
+        "Causa de muerte",
+        sorted(df["killed_by"].dropna().unique())
+    )
 
     return {
         "year_range": year_range,
@@ -100,15 +113,28 @@ def apply_filters(df: pd.DataFrame, filters: dict) -> pd.DataFrame:
     filtered = df.copy()
 
     # TODO (Paso 6): filtrar por year_range con .between()
+    if filters["year_range"] is not None:
+        filtered = filtered[
+            filtered["year"].between(filters["year_range"][0], filters["year_range"][1])
+        ]
 
     # TODO (Paso 7): filtrar por citizenship con .isin()
+    if filters["citizenship"]:
+        filtered = filtered[filtered["citizenship"].isin(filters["citizenship"])]
 
     # TODO (Paso 8): filtrar por gender
+    if filters["gender"]:
+        filtered = filtered[filtered["gender"].isin(filters["gender"])]
 
     # TODO (Paso 9): filtrar por region
+    if filters["region"]:
+        filtered = filtered[filtered["event_location_region"].isin(filters["region"])]
 
     # TODO (Paso 10): filtrar por killed_by
+    if filters["killed_by"]:
+        filtered = filtered[filtered["killed_by"].isin(filters["killed_by"])]
 
     # TODO (Paso 11): llamar log_filter_applied(log, filters, len(df), len(filtered))
+    log_filter_applied(log, filters, len(df), len(filtered))
 
     return filtered

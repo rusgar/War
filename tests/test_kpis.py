@@ -14,7 +14,7 @@ import pandas as pd
 import pytest
 from unittest.mock import patch, MagicMock
 
-from src.kpis import (
+from src.kpis.kpis import (
     _calc_pct_minors,
     _calc_years_covered,
     _calc_regions,
@@ -35,74 +35,88 @@ def sample_df():
 class TestCalcPctMinors:
 
     def test_correct_percentage(self, sample_df):
-        # 2 menores (10, 15) sobre 5 total -> 40.0%
-        pytest.skip("TODO: implementar")
+        result = _calc_pct_minors(sample_df)
+        assert result == 40.0
 
     def test_empty_df_returns_zero(self):
         empty = pd.DataFrame({"age": []})
-        pytest.skip("TODO: implementar")
+        assert _calc_pct_minors(empty) == 0.0
 
     def test_no_minors(self):
         df = pd.DataFrame({"age": [20, 30, 40]})
-        pytest.skip("TODO: implementar")
+        assert _calc_pct_minors(df) == 0.0
 
     def test_all_minors(self):
         df = pd.DataFrame({"age": [5, 10, 15]})
-        pytest.skip("TODO: implementar")
+        assert _calc_pct_minors(df) == 100.0
 
 
 class TestCalcYearsCovered:
 
     def test_correct_count(self, sample_df):
-        # sample_df tiene 5 anios distintos
-        pytest.skip("TODO: implementar")
+        result = _calc_years_covered(sample_df)
+        assert result == 5
 
     def test_empty_returns_zero(self):
-        pytest.skip("TODO: implementar")
+        empty = pd.DataFrame({"year": []})
+        assert _calc_years_covered(empty) == 0
 
     def test_duplicate_years_counted_once(self):
         df = pd.DataFrame({"year": [2000, 2000, 2001, 2001]})
-        pytest.skip("TODO: implementar")
+        assert _calc_years_covered(df) == 2
 
 
 class TestCalcRegions:
 
     def test_correct_count(self, sample_df):
-        # West Bank, Gaza Strip, Israel -> 3 regiones
-        pytest.skip("TODO: implementar")
+        result = _calc_regions(sample_df)
+        assert result == 3
 
     def test_empty_returns_zero(self):
-        pytest.skip("TODO: implementar")
+        empty = pd.DataFrame({"event_location_region": []})
+        assert _calc_regions(empty) == 0
 
 
 class TestCalcAvgAge:
 
     def test_correct_average(self, sample_df):
-        # (10+25+35+15+50)/5 = 27.0
-        pytest.skip("TODO: implementar")
+        result = _calc_avg_age(sample_df)
+        assert result == 27.0
 
     def test_empty_returns_zero(self):
-        pytest.skip("TODO: implementar")
+        empty = pd.DataFrame({"age": []})
+        assert _calc_avg_age(empty) == 0.0
 
     def test_ignores_nan(self):
         df = pd.DataFrame({"age": [10, None, 30]})
-        pytest.skip("TODO: implementar")
+        assert _calc_avg_age(df) == 20.0
 
 
 class TestRenderKpis:
 
-    @patch("src.kpis.st")
+    @patch("src.kpis.kpis.st")
     def test_creates_five_columns(self, mock_st, sample_df):
-        # Configurar mock_st.columns para devolver 5 mocks
-        # Verificar que mock_st.columns fue llamado con 5
-        pytest.skip("TODO: implementar")
+        mock_cols = [MagicMock() for _ in range(5)]
+        mock_st.columns.return_value = mock_cols
+        df_original = sample_df.copy()
+        render_kpis(sample_df, df_original)
+        mock_st.columns.assert_called_with(5)
 
-    @patch("src.kpis.st")
+    @patch("src.kpis.kpis.st")
     def test_calls_metric_five_times(self, mock_st, sample_df):
-        pytest.skip("TODO: implementar")
+        mock_cols = [MagicMock() for _ in range(5)]
+        mock_st.columns.return_value = mock_cols
+        df_original = sample_df.copy()
+        render_kpis(sample_df, df_original)
+        assert mock_cols[0].metric.call_count == 1
+        assert mock_cols[1].metric.call_count == 1
+        assert mock_cols[2].metric.call_count == 1
+        assert mock_cols[3].metric.call_count == 1
+        assert mock_cols[4].metric.call_count == 1
 
-    @patch("src.kpis.st")
+    @patch("src.kpis.kpis.st")
     def test_handles_empty_filtered_df(self, mock_st, sample_df):
-        # No debe lanzar excepcion con df vacio
+        mock_cols = [MagicMock() for _ in range(5)]
+        mock_st.columns.return_value = mock_cols
         empty = sample_df.iloc[0:0]
-        pytest.skip("TODO: implementar")
+        render_kpis(empty, sample_df)

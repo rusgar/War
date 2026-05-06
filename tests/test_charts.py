@@ -20,7 +20,6 @@ import pytest
 import plotly.graph_objects as go
 
 from src.charts import (
-from charts import (
     chart_fatalities_over_time,
     chart_monthly_heatmap,
     chart_age_distribution,
@@ -94,17 +93,8 @@ class TestChartMonthlyHeatmap:
 
 class TestChartAgeDistribution:
 
-    def test_returns_figure(self, small_df):
-        pytest.skip("TODO: implementar")
 
-    def test_handles_nan_ages(self):
-        df = pd.DataFrame({"age": [25, None, 30], "citizenship": ["Palestinian"]*3})
-        pytest.skip("TODO: implementar")
 
-    def test_raises_not_implemented(self):
-        with pytest.raises(NotImplementedError):
-            chart_age_distribution(pd.DataFrame({"age": [], "citizenship": []}))
-            
     def test_has_title(self, small_df):
         fig = chart_age_distribution(small_df)
         assert fig.layout.title is not None
