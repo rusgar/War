@@ -1,6 +1,6 @@
 Creado por **Andres Lopez** y documentado por **Israel C. Rojas**
 
-# Documentacion de creacion, de tests y cambios de los archivos test_kpis.py y test_filters.py
+# Documentacion de creacion de ui, de tests y cambios de modularizacion carpeta KPIs/ y de test_kpis.py y test_filters.py
 
 ### Index
 
