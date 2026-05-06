@@ -3,8 +3,10 @@
 import pandas as pd
 import plotly.graph_objects as go
 
-from src.charts.constants import MONTHS_ES, get_chart_logger, log_chart_rendered
-
+from src.charts.constants import MONTHS_ES
+from src.logger.get_chart_logger import get_chart_logger
+from src.logger.log_chart_rendered import log_chart_rendered
+# Aquí traes la FUNCIÓN que está dentro del archivo
 
 def chart_monthly_heatmap(df: pd.DataFrame) -> "go.Figure":
     """Heatmap: eje X = mes (1-12), eje Y = anio, color = fatalidades."""

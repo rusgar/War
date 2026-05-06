@@ -3,8 +3,10 @@
 import pandas as pd
 import plotly.express as px
 
-from src.charts.constants import PALETTE, MONTHS_ES, get_chart_logger, log_chart_rendered
-
+from src.charts.constants import PALETTE, MONTHS_ES
+from src.logger.get_chart_logger import get_chart_logger
+from src.logger.log_chart_rendered import log_chart_rendered
+# Aquí traes la FUNCIÓN que está dentro del archivo
 
 def chart_scatter_3d(df: pd.DataFrame) -> "go.Figure":
     """Scatter 3D: año vs mes vs edad, coloreado por ciudadanía."""

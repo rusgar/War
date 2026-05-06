@@ -4,7 +4,7 @@ import pandas as pd
 import plotly.graph_objects as go
 from plotly.subplots import make_subplots
 
-from src.charts.constants import get_chart_logger, log_chart_rendered
+
 
 
 def chart_killed_by(df: pd.DataFrame) -> "go.Figure":

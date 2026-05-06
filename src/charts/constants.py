@@ -1,13 +1,7 @@
 # src/charts/constants.py
 
-import logging
 
-import pandas as pd
-import plotly.express as px
-import plotly.graph_objects as go
-from plotly.subplots import make_subplots
 
-from src.logger import log_chart_rendered, get_chart_logger
 
 PALETTE = {
     "Palestinian": "#04FF04",

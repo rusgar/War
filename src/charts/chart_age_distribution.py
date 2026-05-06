@@ -3,8 +3,10 @@
 import pandas as pd
 import plotly.express as px
 
-from src.charts.constants import PALETTE, get_chart_logger
-from src.logger import log_chart_rendered
+from src.charts.constants import PALETTE
+from src.logger.get_chart_logger import get_chart_logger
+from src.logger.log_chart_rendered import log_chart_rendered
+# Aquí traes la FUNCIÓN que está dentro del archivo
 
 
 def chart_age_distribution(df: pd.DataFrame) -> "go.Figure":
@@ -32,7 +34,7 @@ def chart_age_distribution(df: pd.DataFrame) -> "go.Figure":
 
     fig.update_layout(title="Distribucion de Edades")
 
-    from src.logger import log_chart_rendered
+   
     log_chart_rendered(log, "chart_age_distribution", len(df_plot))
 
     return fig

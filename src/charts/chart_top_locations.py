@@ -3,8 +3,9 @@
 import pandas as pd
 import plotly.express as px
 
-from src.charts.constants import get_chart_logger, log_chart_rendered
 
+from src.logger.get_chart_logger import get_chart_logger
+from src.logger.log_chart_rendered import log_chart_rendered
 
 def chart_top_locations(df: pd.DataFrame) -> "go.Figure":
     """Treemap jerarquico: Region -> Distrito -> Localizacion."""
