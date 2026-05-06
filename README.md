@@ -60,6 +60,12 @@ El código funciona, pero viola todos los principios de ingeniería de software:
 **4 alumnos, 3 ramas → siempre hay un Reviewer.**  
 El Reviewer no tiene rama ese día: revisa PRs, completa `test_integration.py` y actualiza `docs/`.
 
+### Creacion de la rama Integracion
+
+````
+git checkout -b integration
+````
+
 ---
 
 ## Rotación (decidirla entre todos el Día 1 — anotarla en `docs/DECISIONS.md`)
