@@ -24,7 +24,7 @@ import pytest
 
 # Importaciones que iran activandose segun avance el ejercicio
 from src.data_loader.load_data import load_data
-from src.filters import apply_filters
+from src.filters.apply_filters import apply_filters
 
 
 @pytest.fixture(scope="module")

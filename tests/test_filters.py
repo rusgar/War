@@ -17,7 +17,7 @@ Commits de referencia:
 import pandas as pd
 import pytest
 
-from src.filters import apply_filters
+from src.filters.apply_filters import apply_filters
 
 
 @pytest.fixture

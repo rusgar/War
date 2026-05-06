@@ -14,14 +14,11 @@ import pandas as pd
 import pytest
 from unittest.mock import patch, MagicMock
 
-from src.kpis.kpis import (
-    _calc_pct_minors,
-    _calc_years_covered,
-    _calc_regions,
-    _calc_avg_age,
-    render_kpis,
-)
-
+from src.kpis._calc_pct_minors import  _calc_pct_minors
+from src.kpis._calc_years_covered import _calc_years_covered
+from src.kpis._calc_regions import _calc_regions
+from src.kpis._calc_avg_age import _calc_avg_age
+from src.kpis.render_kpis import render_kpis
 
 @pytest.fixture
 def sample_df():
@@ -94,7 +91,7 @@ class TestCalcAvgAge:
 
 class TestRenderKpis:
 
-    @patch("src.kpis.kpis.st")
+    @patch("src.kpis.render_kpis.st")
     def test_creates_five_columns(self, mock_st, sample_df):
         mock_cols = [MagicMock() for _ in range(5)]
         mock_st.columns.return_value = mock_cols
@@ -102,7 +99,7 @@ class TestRenderKpis:
         render_kpis(sample_df, df_original)
         mock_st.columns.assert_called_with(5)
 
-    @patch("src.kpis.kpis.st")
+    @patch("src.kpis.render_kpis.st")
     def test_calls_metric_five_times(self, mock_st, sample_df):
         mock_cols = [MagicMock() for _ in range(5)]
         mock_st.columns.return_value = mock_cols
@@ -114,7 +111,7 @@ class TestRenderKpis:
         assert mock_cols[3].metric.call_count == 1
         assert mock_cols[4].metric.call_count == 1
 
-    @patch("src.kpis.kpis.st")
+    @patch("src.kpis.render_kpis.st")
     def test_handles_empty_filtered_df(self, mock_st, sample_df):
         mock_cols = [MagicMock() for _ in range(5)]
         mock_st.columns.return_value = mock_cols
