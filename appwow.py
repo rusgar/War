@@ -20,18 +20,21 @@ from src.filters.render_sidebar import render_sidebar
 from src.filters.apply_filters import  apply_filters
 from src.kpis.render_kpis import render_kpis
 
-from src.charts.chart_fatalities_over_time import chart_fatalities_over_time
+
 from src.charts.chart_age_distribution import chart_age_distribution
 from src.charts.chart_by_region import chart_by_region
 from src.charts.chart_top_locations import chart_top_locations
 from src.charts.chart_killed_by import chart_killed_by
-from src.charts.chart_monthly_heatmap import chart_monthly_heatmap
+
 from src.charts.chart_gender_breakdown import chart_gender_breakdown
 from src.charts.chart_scatter_3d import chart_scatter_3d
+
 from src.stats.compute_descriptive_stats import compute_descriptive_stats
 from src.stats.export_stats_to_json import export_stats_to_json
 
-from src.sections.render_filtered_data_section import render_filtered_data_section
+from src.pages.render_filtered_data_section import render_filtered_data_section
+from src.pages.render_header_section import render_header_section
+from src.pages.render_temporal_section import render_temporal_section
 
 # ── Configuracion ─────────────────────────────────────────────────────────────
 
@@ -64,12 +67,8 @@ def main():
     filters = render_sidebar(df_original)
     df = apply_filters(df_original, filters)
 
-    # Cabecera
-    st.title("📊 Conflict Fatalities Dashboard")
-    st.caption(
-        "Fuente: B'Tselem · Israeli Information Center for Human Rights · 2000–2023"
-    )
-    st.markdown("---")
+    #Cabecera
+    render_header_section()
 
     # KPIs
     try:
@@ -78,18 +77,8 @@ def main():
         st.info("⚙️ feature/ui: render_kpis pendiente")
     st.markdown("---")
 
-    # ── Seccion 1: Temporal ───────────────────────────────────────────────────
-    st.subheader("📅 Evolución Temporal")
-
-    try:
-        st.plotly_chart(chart_fatalities_over_time(df), use_container_width=True)
-    except NotImplementedError:
-        st.info("⚙️ feature/visualization: chart_fatalities_over_time pendiente")
-
-    try:
-        st.plotly_chart(chart_monthly_heatmap(df), use_container_width=True)
-    except NotImplementedError:
-        st.info("⚙️ feature/visualization: chart_monthly_heatmap pendiente")
+    #Temporal
+    render_temporal_section(df)
 
     # ── Seccion 2: Demografía ─────────────────────────────────────────────────
     st.subheader("👥 Demografía")
@@ -149,6 +138,7 @@ def main():
     except NotImplementedError:
         st.info("⚙️ feature/pipeline: compute_descriptive_stats pendiente")
 
+    #Tabla de datos
     render_filtered_data_section(df, df_original)
 
 if __name__ == "__main__":

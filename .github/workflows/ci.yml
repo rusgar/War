@@ -16,7 +16,7 @@ jobs:
       - name: Setup Python
         uses: actions/setup-python@v5
         with:
-          python-version: "3.12"
+          python-version: ${{ matrix.python-version }} 
 
       - name: Install ruff
         run: pip install ruff
@@ -60,8 +60,6 @@ jobs:
           import xml.etree.ElementTree as ET, sys, os
 
           BRANCH_MODULE = {
-              "feature/pipeline":      ["data_loader", "logger", "stats"],
-              "feature/visualization": ["charts"],
               "feature/ui":            ["filters", "kpis"],
           }
 
