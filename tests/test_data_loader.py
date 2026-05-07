@@ -1,7 +1,6 @@
 import pytest
 import pandas as pd
-import numpy
-from pathlib import Path
+import pathlib.Path
 from unittest.mock import patch
 from src.data_loader._normalize_columns import _normalize_columns
 from src.data_loader._apply_type_conversions import _apply_type_conversions

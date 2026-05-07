@@ -21,12 +21,10 @@ from src.filters.apply_filters import  apply_filters
 from src.kpis.render_kpis import render_kpis
 
 
-from src.charts.chart_age_distribution import chart_age_distribution
 from src.charts.chart_by_region import chart_by_region
 from src.charts.chart_top_locations import chart_top_locations
 from src.charts.chart_killed_by import chart_killed_by
 
-from src.charts.chart_gender_breakdown import chart_gender_breakdown
 from src.charts.chart_scatter_3d import chart_scatter_3d
 
 from src.stats.compute_descriptive_stats import compute_descriptive_stats
@@ -36,6 +34,7 @@ from src.pages.render_filtered_data_section import render_filtered_data_section
 from src.pages.render_header_section import render_header_section
 from src.pages.render_temporal_section import render_temporal_section
 from src.pages.render_demography_section import render_demography_section
+from src.pages.render_geography_section import render_geography_section
 
 # ── Configuracion ─────────────────────────────────────────────────────────────
 

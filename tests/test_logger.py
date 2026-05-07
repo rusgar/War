@@ -1,6 +1,6 @@
 import logging
 import pytest
-from pathlib import Path
+import pathlib.Path
 from src.config import LOG_DIR
 from src.logger.setup_logger import setup_logger
 from src.logger.log_data_loaded import log_data_loaded
