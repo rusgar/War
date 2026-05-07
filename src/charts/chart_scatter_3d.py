@@ -2,6 +2,7 @@
 
 import pandas as pd
 import plotly.express as px
+import plotly.graph_objects as go
 
 from src.charts.constants import PALETTE, MONTHS_ES
 from src.logger.get_chart_logger import get_chart_logger
@@ -61,6 +62,7 @@ def chart_scatter_3d(df: pd.DataFrame) -> "go.Figure":
             zaxis=dict(title="Edad"),
         ),
         legend=dict(title="Ciudadanía"),
+        height=800,
     )
 
     fig.update_traces(marker=dict(size=3, opacity=0.7))

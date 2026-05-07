@@ -3,7 +3,6 @@
 import logging
 import logging.handlers
 from datetime import datetime
-from pathlib import Path
 
 from src.config import DATE_FORMAT, LOG_DIR, LOG_FORMAT
 

@@ -19,7 +19,6 @@ Commits de referencia:
   test(integration): add kpis delta is non-positive when filtered
 """
 
-import pandas as pd
 import pytest
 
 # Importaciones que iran activandose segun avance el ejercicio
