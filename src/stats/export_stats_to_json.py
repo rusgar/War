@@ -13,21 +13,22 @@ RESULTS_DIR = Path("results")
 def export_stats_to_json(stats: dict, output_dir: Path = RESULTS_DIR) -> Path:
     """Exporta el diccionario de estadísticas a un JSON con timestamp."""
    
-    # (Paso 1): Crear directorio
     output_dir.mkdir(parents=True, exist_ok=True)
-
-    # (Paso 2): Construir nombre del fichero
     timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
     file_path = output_dir / f"stats_{timestamp}.json"
 
-    # (Paso 3 y 4): Escribir fichero
+    # --- SOLUCIÓN: Convertir claves a string de forma recursiva ---
+    def stringify_keys(d):
+        if isinstance(d, dict):
+            return {str(k): stringify_keys(v) for k, v in d.items()}
+        return d
+    
+    clean_stats = stringify_keys(stats)
+    # -------------------------------------------------------------
+
     with open(file_path, "w", encoding="utf-8") as f:
-        # default=str ayuda con objetos que no son JSON-serializables directamente
-        json.dump(stats, f, ensure_ascii=False, indent=2, default=str)
+        # Ahora usamos clean_stats
+        json.dump(clean_stats, f, ensure_ascii=False, indent=2, default=str)
 
     log.info("Estadísticas exportadas a: %s", file_path)
-    
-    # (Paso 5): Devolver Path
-
     return file_path
-

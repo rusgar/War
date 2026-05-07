@@ -102,3 +102,195 @@ git push origin su-rama
 - Esto es parte normal del trabajo colaborativo con Git."
 
 Fecha de última actualización: 05/05/2026
+
+---
+---
+
+
+# 📢 Actualización para alumnos: Sincronizar vuestras ramas
+
+**⚠️ IMPORTANTE:** Ejecutad estos comandos HOY para tener los últimos cambios (`.gitignore` actualizado, limpieza de logs, etc.)
+
+## 🔧 Comandos según vuestra rama
+
+### Si trabajáis en `feature/visualizacion`:
+```bash
+git checkout feature/visualizacion
+git pull origin feature/visualizacion --rebase
+
+### Si trabajáis en feature/ui:
+
+git checkout feature/ui
+git pull origin feature/ui --rebase
+
+### Si trabajáis en pipeline:
+
+git checkout pipeline
+git pull origin pipeline --rebase
+
+```
+
+## Qué veréis durante el proceso
+- Antes de ejecutar los comandos:
+git status
+### Veréis: "Your branch is behind 'origin/...' by X commits"
+
+## Después del git pull:
+✅ Archivo .gitignore actualizado (ignora logs)
+
+✅ Limpieza de archivos .log del repositorio
+
+✅ Últimos cambios integrados desde integration
+
+Fecha de última actualización: 06/05/2026
+
+---
+---
+
+# 📋 COMPROBACIONES Y PLAN DE TRABAJO
+
+**Fecha:** 07/05/2026  
+**Rama actual:** `integration` (funcional)  
+**Próximo paso:** Merge a `main` + mejoras pendientes
+
+---
+
+## ✅ ESTADO ACTUAL - INTEGRATION FUNCIONA
+
+| Componente | Estado | Notas |
+|------------|--------|-------|
+| `app.py` | ✅ Funcional | Carga CSV, portada, gráficos |
+| `render_sidebar.py` | ✅ Funcional | Filtros, imagen portada |
+| `combine_data()` | ✅ Funcional | Combina CSVs adicionales |
+| Gráficos básicos | ✅ Funcional | Todos los charts importan bien |
+| Estructura `src/pages/` | ⚠️ Parcial | Existen pero no integrados al 100% |
+| Tests | ❌ No pasan | Varios tests en skip o fallando |
+| GitHub Actions (CI) | ❌ No funciona | Pipeline incompleto/roto |
+
+---
+
+## 🔴 PROBLEMAS PENDIENTES (URGENTES)
+
+### 1. GitHub Actions / CI Pipeline
+**Problema:** El workflow no corre o falla  
+**Ubicación:** `.github/workflows/ci.yml`  
+**Solución:** 
+- Verificar sintaxis del YAML
+- Asegurar que Python 3.9-3.12 están soportados
+- Corregir rutas de tests
+
+### 2. Tests que no pasan
+**Archivos con problemas:**
+- `tests/test_charts.py`
+- `tests/test_data_loader.py`
+- `tests/test_filters.py`
+- `tests/test_integration.py`
+- `tests/test_kpis.py`
+- `tests/test_logger.py`
+- `tests/test_stats.py`
+
+**Comando para ver errores:**
+```bash
+pytest tests/ -v --tb=short
+```
+
+### 3.  Módulos pages (integración parcial)
+
+Existentes pero no usados completamente:
+
+- render_demography_section.py
+
+- render_filtered_data_section.py
+
+- render_geography_section.py
+
+- render_header_section.py
+
+- render_killed_by_section.py
+
+- render_stats_section.py
+
+- render_temporal_section.py
+
+**Tarea: Integrarlos en app.py para estructura modular**
+
+###  4. Visualizaciones de gráficos
+
+Gráficos implementados pero pendientes de validación:
+
+- chart_fatalities_over_time - Evolución temporal
+
+- chart_monthly_heatmap - Mapa de calor mensual
+
+- chart_age_distribution - Distribución por edad
+
+- chart_gender_breakdown - Desglose por género
+
+- chart_by_region - Por región
+
+- chart_top_locations - Top ubicaciones
+
+- chart_killed_by - Causas de fatalidad
+
+- chart_scatter_3d - Scatter 3D (comentado)
+----
+----
+
+# CONSEJOS
+
+## 1. Navbar para navegación sin scroll
+Ubicación: app.py o src/components/navbar.py
+Funcionalidad:
+
+# Ejemplo de navbar con st.selectbox o st.tabs
+````
+page = st.sidebar.radio("Ir a:", [
+    "📅 Temporal", 
+    "👥 Demografía", 
+    "🗺️ Geografía", 
+    "⚠️ Causas", 
+    "📊 Estadísticas",
+    "🔎 Datos"
+])
+
+````
+#  2 Añadir víctimas manualmente (edición directa)
+
+Propuesta: Formulario en sidebar o página aparte
+Campos necesarios:
+
+Nombre
+
+Edad
+
+Género
+
+Fecha del evento
+
+Ciudadanía
+
+Región
+
+Causa de muerte
+
+**Implementación sugerida:**
+
+````
+
+# src/forms/add_victim_form.py
+def render_add_victim_form():
+    with st.form("add_victim"):
+        name = st.text_input("Nombre")
+        age = st.number_input("Edad", 0, 120)
+        # ... más campos
+        if st.form_submit_button("➕ Añadir víctima"):
+            # Guardar en CSV o session_state
+````
+
+## 3. Actualizar datos en tiempo real
+Poder modificar registros existentes
+
+Guardar cambios a CSV o archivo local
+
+Reflejar cambios inmediatamente en gráficos
+Fecha de última actualización: 07/05/2026
