@@ -35,6 +35,7 @@ from src.stats.export_stats_to_json import export_stats_to_json
 from src.pages.render_filtered_data_section import render_filtered_data_section
 from src.pages.render_header_section import render_header_section
 from src.pages.render_temporal_section import render_temporal_section
+from src.pages.render_demography_section import render_demography_section
 
 # ── Configuracion ─────────────────────────────────────────────────────────────
 
@@ -80,21 +81,8 @@ def main():
     #Temporal
     render_temporal_section(df)
 
-    # ── Seccion 2: Demografía ─────────────────────────────────────────────────
-    st.subheader("👥 Demografía")
-    col3, col4 = st.columns(2)
-
-    with col3:
-        try:
-            st.plotly_chart(chart_age_distribution(df), use_container_width=True)
-        except NotImplementedError:
-            st.info("⚙️ feature/visualization: chart_age_distribution pendiente")
-
-    with col4:
-        try:
-            st.plotly_chart(chart_gender_breakdown(df), use_container_width=True)
-        except NotImplementedError:
-            st.info("⚙️ feature/visualization: chart_gender_breakdown pendiente")
+    #Demografía
+    render_demography_section(df)
 
     # ── Seccion 3: Geografía ──────────────────────────────────────────────────
     st.subheader("🗺️ Distribución Geográfica")
