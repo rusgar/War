@@ -3,6 +3,9 @@ import logging
 import pandas as pd
 import streamlit as st
 
+## Añadida linea para que aparezca el boton para cargar un CSV
+from src.data_loader.add_csv import _handle_csv_upload
+
 
 log = logging.getLogger(__name__)
 
@@ -22,6 +25,11 @@ def render_sidebar(df: pd.DataFrame) -> dict:
                 gender (list), region (list), killed_by (list).
     """
     st.sidebar.title("Filtros")
+    
+    ## Añadida linea para que aparezca el boton para cargar un CSV
+    # Boton para añadir CSV adicional - pasar DataFrame completo para verificar duplicados
+    _handle_csv_upload(df)
+    
     st.sidebar.markdown("---")
 
     # TODO (Paso 1): Slider de anio
