@@ -70,12 +70,12 @@ git checkout -b integration
 
 ## Rotación (decidirla entre todos el Día 1 — anotarla en `docs/DECISIONS.md`)
 
-|       | `feature/pipeline` | `feature/visualization` | `feature/ui` | Reviewer |
+|       | `feature/pipeline` | `feature/visualization` | `feature/ui` | `Integracion` |
 |-------|-------------------|------------------------|-------------|----------|
 | Día 1 | Carlos | &nbsp; | &nbsp; | &nbsp; |
-| Día 2 | Andres y Carlos | &nbsp; | &nbsp; | &nbsp; |
-| Día 3 | &nbsp; | &nbsp; | &nbsp; | &nbsp; |
-| Día 4 | &nbsp; | &nbsp; | &nbsp; | &nbsp; |
+| Día 2 | Andres y Carlos | &nbsp; | &nbsp; | Edu |
+| Día 3 | &nbsp; | &nbsp; | &nbsp; | Edu |
+| Día 4 | &nbsp; | &nbsp; | &nbsp; | Edu |
 
 **Regla:** nadie repite rama dos días seguidos.
 
