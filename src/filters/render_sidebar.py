@@ -2,6 +2,8 @@ import logging
 
 import pandas as pd
 import streamlit as st
+import random
+from pathlib import Path
 
 
 
@@ -12,6 +14,16 @@ log = logging.getLogger(__name__)
 def render_sidebar(df: pd.DataFrame) -> dict:
     st.sidebar.header("📊 Panel de Control")
     st.sidebar.markdown("Ajusta los parámetros para filtrar los datos.")
+
+     # --- IMAGEN PORTADA ---
+    portada_path = Path("src/filters/img/Portada.png")
+    
+    if portada_path.exists():
+        st.sidebar.image(str(portada_path), caption="📸 Portada", use_container_width=True)
+        st.sidebar.markdown("---")
+    else:
+        st.sidebar.warning("⚠️ No se encontró la imagen 'filters/img/Portada.png'")
+        st.sidebar.markdown("---")
     
     # 1. Definimos la función de limpieza (Callback)
     def reset_all_filters():
