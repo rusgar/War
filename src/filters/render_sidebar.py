@@ -3,7 +3,6 @@ import logging
 import pandas as pd
 import streamlit as st
 
-from src.logger.log_filter_applied import log_filter_applied
 
 log = logging.getLogger(__name__)
 

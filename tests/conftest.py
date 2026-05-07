@@ -1,4 +1,3 @@
-import logging
 from src.logger.setup_logger import setup_logger
 
 _test_progress = {}

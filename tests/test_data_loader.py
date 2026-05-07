@@ -1,8 +1,7 @@
 import pytest
 import pandas as pd
-import numpy as np
 from pathlib import Path
-from unittest.mock import patch, MagicMock
+from unittest.mock import patch
 from src.data_loader._normalize_columns import _normalize_columns
 from src.data_loader._apply_type_conversions import _apply_type_conversions
 from src.data_loader._add_derived_features import _add_derived_features
