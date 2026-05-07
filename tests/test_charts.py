@@ -14,14 +14,16 @@ import pandas as pd
 import pytest
 import plotly.graph_objects as go
 
-from src.charts.chart_fatalities_over_time import chart_fatalities_over_time
-from src.charts.chart_age_distribution import chart_age_distribution
-from src.charts.chart_by_region import chart_by_region
-from src.charts.chart_top_locations import chart_top_locations
-from src.charts.chart_killed_by import chart_killed_by
-from src.charts.chart_monthly_heatmap import chart_monthly_heatmap
-from src.charts.chart_gender_breakdown import chart_gender_breakdown
-from src.charts.chart_scatter_3d import chart_scatter_3d
+from src.charts import (
+    chart_fatalities_over_time,
+    chart_monthly_heatmap,
+    chart_scatter_3d,
+    chart_age_distribution,
+    chart_gender_breakdown,
+    chart_by_region,
+    chart_top_locations,
+    chart_killed_by,
+)
 
 
 @pytest.fixture
