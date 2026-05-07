@@ -83,21 +83,8 @@ def main():
     #Demografía
     render_demography_section(df)
 
-    # ── Seccion 3: Geografía ──────────────────────────────────────────────────
-    st.subheader("🗺️ Distribución Geográfica")
-    col5, col6 = st.columns([1, 2])
-
-    with col5:
-        try:
-            st.plotly_chart(chart_by_region(df), use_container_width=True)
-        except NotImplementedError:
-            st.info("⚙️ feature/visualization: chart_by_region pendiente")
-
-    with col6:
-        try:
-            st.plotly_chart(chart_top_locations(df), use_container_width=True)
-        except NotImplementedError:
-            st.info("⚙️ feature/visualization: chart_top_locations pendiente")
+    #Geografía
+    render_geography_section(df)
 
     # ── Seccion 4: Killed by ──────────────────────────────────────────────────
     st.subheader("⚠️ Causa de la fatalidad")
