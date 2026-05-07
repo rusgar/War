@@ -7,7 +7,7 @@ import plotly.graph_objects as go
 from src.charts.constants import PALETTE
 
 
-def chart_by_region(df: pd.DataFrame) -> "go.Figure":
+def chart_by_region(df: pd.DataFrame):
     """Barras horizontales apiladas: region vs fatalidades por ciudadania."""
     df_counts = (
         df.groupby(["event_location_region", "citizenship"])

@@ -2,65 +2,86 @@ import logging
 
 import pandas as pd
 import streamlit as st
+from pathlib import Path
 
-## Añadida linea para que aparezca el boton para cargar un CSV
-from src.data_loader.add_csv import _handle_csv_upload
 
+
+#from src.logger.log_filter_applied import log_filter_applied
 
 log = logging.getLogger(__name__)
 
 def render_sidebar(df: pd.DataFrame) -> dict:
-    """
-    Renderiza el sidebar y devuelve los filtros seleccionados.
+    st.sidebar.header("📊 Panel de Control")
+    st.sidebar.markdown("Ajusta los parámetros para filtrar los datos.")
 
-    Parameters
-    ----------
-    df : pd.DataFrame
-        DataFrame original para extraer los valores unicos de cada filtro.
+     # --- IMAGEN PORTADA ---
+    portada_path = Path("src/filters/img/Portada.png")
+    
+    if portada_path.exists():
+        st.sidebar.image(str(portada_path), caption="📸 Portada", use_container_width=True)
+        st.sidebar.markdown("---")
+    else:
+        st.sidebar.warning("⚠️ No se encontró la imagen 'filters/img/Portada.png'")
+        st.sidebar.markdown("---")
+    
+    # 1. Definimos la función de limpieza (Callback)
+    def reset_all_filters():
+        st.session_state.year_slider = (int(df["year"].min()), int(df["year"].max()))
+        st.session_state.citiz_filter = []
+        st.session_state.gender_filter = []
+        st.session_state.region_filter = []
+        st.session_state.cause_filter = []
+    
+    # --- Temporalidad ---
+    st.sidebar.subheader("📅 Temporalidad")
+    min_year, max_year = int(df["year"].min()), int(df["year"].max())
+    
+    year_range = st.sidebar.slider(
+        "Rango de años", 
+        min_year, max_year, (min_year, max_year),
+        key="year_slider"
+    )
 
-    Returns
-    -------
-    dict
-        Claves: year_range (tuple|None), citizenship (list),
-                gender (list), region (list), killed_by (list).
-    """
-    st.sidebar.title("Filtros")
-    
-    ## Añadida linea para que aparezca el boton para cargar un CSV
-    # Boton para añadir CSV adicional - pasar DataFrame completo para verificar duplicados
-    _handle_csv_upload(df)
-    
     st.sidebar.markdown("---")
 
-    # TODO (Paso 1): Slider de anio
-    min_year = int(df["year"].min())
-    max_year = int(df["year"].max())
-    year_range = st.sidebar.slider("Rango de anos", min_year, max_year, (min_year, max_year))
+    # --- Perfil de la Víctima ---
+    with st.sidebar.expander("👤 Perfil de la Víctima", expanded=True):
+        citizenship = st.multiselect(
+            "Ciudadanía",
+            sorted(df["citizenship"].dropna().unique()),
+            placeholder="Selecciona países",
+            key="citiz_filter"
+        )
+        gender = st.multiselect(
+            "Género",
+            sorted(df["gender"].dropna().unique()),
+            placeholder="Selecciona géneros",
+            key="gender_filter"
+        )
+
+    # --- Ubicación y Causa ---
+    with st.sidebar.expander("📍 Ubicación y Causa", expanded=False):
+        region = st.multiselect(
+            "Región",
+            sorted(df["event_location_region"].dropna().unique()),
+            placeholder="Selecciona regiones",
+            key="region_filter"
+        )
+        killed_by = st.multiselect(
+            "Causa de muerte / Responsable",
+            sorted(df["killed_by"].dropna().unique()),
+            placeholder="Selecciona causas",
+            key="cause_filter"
+        )
 
     st.sidebar.markdown("---")
 
-    # TODO (Paso 2): Multiselect ciudadania
-    citizenship = st.sidebar.multiselect(
-        "Ciudadania",
-        sorted(df["citizenship"].dropna().unique())
-    )
-
-    # TODO (Paso 3): Multiselect genero
-    gender = st.sidebar.multiselect(
-        "Genero",
-        sorted(df["gender"].dropna().unique())
-    )
-
-    # TODO (Paso 4): Multiselect region
-    region = st.sidebar.multiselect(
-        "Region",
-        sorted(df["event_location_region"].dropna().unique())
-    )
-
-    # TODO (Paso 5): Multiselect killed_by
-    killed_by = st.sidebar.multiselect(
-        "Causa de muerte",
-        sorted(df["killed_by"].dropna().unique())
+    # 2. El botón ahora usa 'on_click'
+    st.sidebar.button(
+        "Limpiar todos los filtros", 
+        use_container_width=True, 
+        type="primary",
+        on_click=reset_all_filters  # <--- Esto es la clave
     )
 
     return {
@@ -70,4 +91,3 @@ def render_sidebar(df: pd.DataFrame) -> dict:
         "region": region,
         "killed_by": killed_by,
     }
-

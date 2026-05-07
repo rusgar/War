@@ -8,7 +8,7 @@ import plotly.graph_objects as go
 from src.logger.get_chart_logger import get_chart_logger
 from src.logger.log_chart_rendered import log_chart_rendered
 
-def chart_top_locations(df: pd.DataFrame) -> "go.Figure":
+def chart_top_locations(df: pd.DataFrame):
     """Treemap jerarquico: Region -> Distrito -> Localizacion."""
     df_plot = df.dropna(subset=["event_location_region"])
     

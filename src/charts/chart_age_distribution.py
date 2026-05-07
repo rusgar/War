@@ -10,7 +10,7 @@ from src.logger.log_chart_rendered import log_chart_rendered
 # Aquí traes la FUNCIÓN que está dentro del archivo
 
 
-def chart_age_distribution(df: pd.DataFrame) -> "go.Figure":
+def chart_age_distribution(df: pd.DataFrame):
     """Histograma de edades con marginal rug, por ciudadania."""
     log = get_chart_logger("chart_age_distribution")
 
