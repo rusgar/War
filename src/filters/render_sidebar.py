@@ -3,6 +3,7 @@ import logging
 import pandas as pd
 import streamlit as st
 from pathlib import Path
+from src.data_loader.add_csv import _handle_csv_upload
 
 
 
@@ -12,6 +13,7 @@ log = logging.getLogger(__name__)
 
 def render_sidebar(df: pd.DataFrame) -> dict:
     st.sidebar.header("📊 Panel de Control")
+    _handle_csv_upload(df)
     st.sidebar.markdown("Ajusta los parámetros para filtrar los datos.")
 
      # --- IMAGEN PORTADA ---
@@ -41,7 +43,7 @@ def render_sidebar(df: pd.DataFrame) -> dict:
         min_year, max_year, (min_year, max_year),
         key="year_slider"
     )
-
+    
     st.sidebar.markdown("---")
 
     # --- Perfil de la Víctima ---
