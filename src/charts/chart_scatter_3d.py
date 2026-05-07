@@ -8,7 +8,7 @@ from src.logger.get_chart_logger import get_chart_logger
 from src.logger.log_chart_rendered import log_chart_rendered
 # Aquí traes la FUNCIÓN que está dentro del archivo
 
-def chart_scatter_3d(df: pd.DataFrame) -> "go.Figure":
+def chart_scatter_3d(df: pd.DataFrame):
     """Scatter 3D: año vs mes vs edad, coloreado por ciudadanía."""
     if "date_of_event" in df.columns:
         df_plot = df.copy()

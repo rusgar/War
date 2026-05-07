@@ -20,11 +20,6 @@ from src.filters.render_sidebar import render_sidebar
 from src.filters.apply_filters import  apply_filters
 from src.kpis.render_kpis import render_kpis
 
-
-from src.charts.chart_by_region import chart_by_region
-from src.charts.chart_top_locations import chart_top_locations
-from src.charts.chart_killed_by import chart_killed_by
-
 from src.charts.chart_scatter_3d import chart_scatter_3d
 
 from src.stats.compute_descriptive_stats import compute_descriptive_stats
@@ -35,6 +30,8 @@ from src.pages.render_header_section import render_header_section
 from src.pages.render_temporal_section import render_temporal_section
 from src.pages.render_demography_section import render_demography_section
 from src.pages.render_geography_section import render_geography_section
+from src.pages.render_killed_by_section import render_killed_by_section
+from src.pages.render_stats_section import render_stats_section
 
 # ── Configuracion ─────────────────────────────────────────────────────────────
 
@@ -86,31 +83,11 @@ def main():
     #Geografía
     render_geography_section(df)
 
-    # ── Seccion 4: Killed by ──────────────────────────────────────────────────
-    st.subheader("⚠️ Causa de la fatalidad")
-    try:
-        st.plotly_chart(chart_killed_by(df), use_container_width=True)
-    except NotImplementedError:
-        st.info("⚙️ feature/visualization: chart_killed_by pendiente (Día 3)")
+    #Killed by
+    render_killed_by_section(df)
 
-    # ── Seccion 5: Estadisticas y exportacion ─────────────────────────────────
-    st.subheader("📊 Estadísticas Descriptivas")
-    try:
-        stats = compute_descriptive_stats(df)
-        col_s1, col_s2, col_s3 = st.columns(3)
-        with col_s1:
-            st.metric("Edad media", f"{stats['age_stats']['mean']:.1f}")
-        with col_s2:
-            st.metric("Edad mediana", f"{stats['age_stats']['median']:.1f}")
-        with col_s3:
-            st.metric("% Menores", f"{stats['pct_minors']:.1f}%")
-
-        if st.button("💾 Exportar estadísticas a JSON"):
-            path = export_stats_to_json(stats)
-            st.success(f"Guardado en: {path}")
-
-    except NotImplementedError:
-        st.info("⚙️ feature/pipeline: compute_descriptive_stats pendiente")
+    #Estadísticas y exportación
+    render_stats_section(df)
 
     #Tabla de datos
     render_filtered_data_section(df, df_original)

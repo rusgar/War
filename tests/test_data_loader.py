@@ -1,6 +1,6 @@
 import pytest
 import pandas as pd
-import pathlib.Path
+from pathlib import Path 
 from unittest.mock import patch
 from src.data_loader._normalize_columns import _normalize_columns
 from src.data_loader._apply_type_conversions import _apply_type_conversions
@@ -76,6 +76,8 @@ def test_load_data_success(mock_exists, mock_read_csv, raw_df):
     assert not df_result.empty
 
 def test_load_data_file_not_found():
-    """Verifica que se lance FileNotFoundError si el path no existe."""
+    # Definimos una ruta que sabemos que es falsa dentro de nuestra estructura
+    fake_path = Path("data/this_file_does_not_exist.csv")
+    
     with pytest.raises(FileNotFoundError):
-        load_data(Path("non_existent_file.csv"))
+        load_data(fake_path)

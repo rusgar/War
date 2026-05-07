@@ -8,7 +8,7 @@ from src.logger.get_chart_logger import get_chart_logger
 from src.logger.log_chart_rendered import log_chart_rendered
 # Aquí traes la FUNCIÓN que está dentro del archivo
 
-def chart_fatalities_over_time(df: pd.DataFrame) -> "go.Figure":
+def chart_fatalities_over_time(df: pd.DataFrame):
     """Lineas: fatalidades por anio, una linea por ciudadania."""
     grouped = df.groupby(["year", "citizenship"]).size().reset_index(name="total")
 

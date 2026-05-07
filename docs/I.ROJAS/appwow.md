@@ -11,3 +11,6 @@ Archivos creados en pages/
 - render_header_section.py
 - render_filtered_data_section.py
 - render_temporal_section.py
+- render_demography_section.py
+- render_geography_section.py
+- render_killed_by_section.py
