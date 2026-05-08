@@ -16,6 +16,9 @@ import pandas as pd
 # Estas importaciones asumen que habeis creado la carpeta src/
 # Adaptad la ruta si vuestra estructura es diferente
 from src.data_loader.load_data import load_data
+from src.data_loader.combine_data import combine_data
+
+
 from src.logger.setup_logger import setup_logger
 from src.filters.render_sidebar import render_sidebar
 from src.filters.apply_filters import  apply_filters
@@ -111,9 +114,16 @@ def combine_data(original_df: pd.DataFrame) -> pd.DataFrame:
 def main():
     df_original = get_data()
 
-    # Sidebar y filtros
-    filters = render_sidebar(df_original)
-    df = apply_filters(df_original, filters)
+    # Combinar con datos adicionales si existen
+    df_combined = combine_data(df_original)
+
+    if len(df_combined) > len(df_original):
+        st.info(f"📊 Datos combinados: {len(df_combined)} registros (originales: {len(df_original)})")
+
+
+    # Sidebar y filtros - pasar datos combinados para reflejar cambios
+    filters = render_sidebar(df_combined)
+    df = apply_filters(df_combined, filters)
 
     # Cabecera
     st.title("📊 Conflict Fatalities Dashboard")
@@ -209,7 +219,7 @@ def main():
 
     # ── Seccion 7: Tabla de datos ─────────────────────────────────────────────
     st.subheader("🔎 Datos Filtrados")
-    st.caption(f"{len(df):,} registros mostrados de {len(df_original):,} totales")
+    st.caption(f"{len(df):,} registros mostrados de {len(df_combined):,} totales")
 
     cols_display = [
         "name", "date_of_event", "age", "gender",

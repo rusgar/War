@@ -20,8 +20,6 @@ from src.filters.render_sidebar import render_sidebar
 from src.filters.apply_filters import  apply_filters
 from src.kpis.render_kpis import render_kpis
 
-from src.charts.chart_scatter_3d import chart_scatter_3d
-
 from src.stats.compute_descriptive_stats import compute_descriptive_stats
 from src.stats.export_stats_to_json import export_stats_to_json
 
@@ -32,6 +30,7 @@ from src.pages.render_demography_section import render_demography_section
 from src.pages.render_geography_section import render_geography_section
 from src.pages.render_killed_by_section import render_killed_by_section
 from src.pages.render_stats_section import render_stats_section
+from src.pages.render_chart_scatter_3d import render_chart_scatter_3d
 
 # ── Configuracion ─────────────────────────────────────────────────────────────
 
@@ -85,6 +84,8 @@ def main():
 
     #Killed by
     render_killed_by_section(df)
+
+    render_chart_scatter_3d(df)
 
     #Estadísticas y exportación
     render_stats_section(df)
