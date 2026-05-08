@@ -30,12 +30,12 @@ def render_sidebar(df: pd.DataFrame) -> dict:
     if portada_path.exists():
         try:
             try:
-                st.sidebar.image(str(portada_path), caption="📸 Portada", use_container_width=True)
+                st.sidebar.image(str(portada_path),  use_container_width=True)
             except TypeError:
                 try:
-                    st.sidebar.image(str(portada_path), caption="📸 Portada", use_column_width=True)
+                    st.sidebar.image(str(portada_path), use_column_width=True)
                 except TypeError:
-                    st.sidebar.image(str(portada_path), caption="📸 Portada")
+                    st.sidebar.image(str(portada_path), )
             st.sidebar.markdown("---")
         except Exception as e:
             st.sidebar.error(f"Error al cargar imagen: {str(e)}")
@@ -184,7 +184,10 @@ def render_sidebar(df: pd.DataFrame) -> dict:
     
     # Primero la imagen
     if fundacion_path.exists():
-        st.sidebar.image(str(fundacion_path), use_container_width=True)
+        # Centrar usando columnas vacías
+        left, center, right = st.sidebar.columns([1, 2, 1])
+        center.image(str(fundacion_path), width=150)
+       
     
     # Luego el texto
     st.sidebar.markdown(

@@ -1,6 +1,5 @@
 import streamlit as st
 
-
 def render_header_section():
     st.title("📊 Conflict Fatalities Dashboard")
     st.caption(
