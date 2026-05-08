@@ -1,27 +1,34 @@
 import logging
-
 import pandas as pd
 import streamlit as st
 from pathlib import Path
 from src.data_loader.add_csv import _handle_csv_upload
 
-
-
 #from src.logger.log_filter_applied import log_filter_applied
 
 log = logging.getLogger(__name__)
 
+def load_css(file_path):
+    """Carga un archivo CSS y lo inyecta en Streamlit"""
+    with open(file_path, 'r') as f:
+        css_content = f.read()
+    st.markdown(f'<style>{css_content}</style>', unsafe_allow_html=True)
+
 def render_sidebar(df: pd.DataFrame) -> dict:
+    # Cargar CSS personalizado
+    css_path = Path(__file__).parent / "styles" / "sidebar.css"
+    if css_path.exists():
+        load_css(css_path)
+    
     st.sidebar.header("📊 Panel de Control")
     _handle_csv_upload(df)
     st.sidebar.markdown("Ajusta los parámetros para filtrar los datos.")
 
-         # --- IMAGEN PORTADA ---
+    # --- IMAGEN PORTADA ---
     portada_path = Path("src/filters/img/Portada.png")
     
     if portada_path.exists():
         try:
-            # Intentar con diferentes parámetros según la versión de Streamlit
             try:
                 st.sidebar.image(str(portada_path), caption="📸 Portada", use_container_width=True)
             except TypeError:
@@ -34,7 +41,7 @@ def render_sidebar(df: pd.DataFrame) -> dict:
             st.sidebar.error(f"Error al cargar imagen: {str(e)}")
             st.sidebar.markdown("---")
     else:
-        st.sidebar.markdown("---")  # Silencioso, sin warning
+        st.sidebar.markdown("---")
     
     # 1. Definimos la función de limpieza (Callback)
     def reset_all_filters():
@@ -88,13 +95,36 @@ def render_sidebar(df: pd.DataFrame) -> dict:
 
     st.sidebar.markdown("---")
 
-    # 2. El botón ahora usa 'on_click'
+    # Botón de limpieza
     st.sidebar.button(
         "Limpiar todos los filtros", 
         use_container_width=True, 
         type="primary",
-        on_click=reset_all_filters  # <--- Esto es la clave
+        on_click=reset_all_filters
     )
+
+    # --- SECCIÓN DE COLABORADORES ---
+    st.sidebar.markdown("---")
+    st.sidebar.markdown("### 👥 Colaboradores")
+    
+    colaboradores = [
+        {"nombre": "Edu Rus", "github": "https://github.com/rusgar", "rol": "Docente"},
+        {"nombre": "Carlos", "github": "https://github.com/carlosbarrientosarias27-star", "rol": "feature/pipelines"},
+        {"nombre": "Israel", "github": "https://github.com/israelscr-prog", "rol": "Modularización y testing"},
+        {"nombre": "Angel", "github": "https://github.com/kindred-98", "rol": "feature/visualizaciones,backend"},
+        {"nombre": "Andres", "github": "https://github.com/zombiradiactivo", "rol": "Unificación de código y "},
+    ]
+    
+    
+    for colab in colaboradores:
+        st.sidebar.markdown(
+            f'<a href="https://github.com/{colab["github"]}" target="_blank" class="colab-link">'
+            f'<img src="https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png" class="github-icon">'
+            f'<span class="colab-name">{colab["nombre"]}</span>'
+            f'</a>'
+            f'<div class="colab-rol">{colab["rol"]}</div>',
+            unsafe_allow_html=True
+        ) 
 
     return {
         "year_range": year_range,
@@ -103,5 +133,3 @@ def render_sidebar(df: pd.DataFrame) -> dict:
         "region": region,
         "killed_by": killed_by,
     }
- 
-     
