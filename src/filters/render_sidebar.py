@@ -175,14 +175,30 @@ def render_sidebar(df: pd.DataFrame) -> dict:
         )
     
     # Footer
+        # --- FOOTER CON IMAGEN ---
     st.sidebar.markdown("---")
+    
+    fundacion_path = Path("filters/img/Fundacion.png")
+    if not fundacion_path.exists():
+        fundacion_path = Path("src/filters/img/Fundacion.png")
+    
+    # Primero la imagen
+    if fundacion_path.exists():
+        st.sidebar.image(str(fundacion_path), use_container_width=True)
+    
+    # Luego el texto
     st.sidebar.markdown(
         '<div style="text-align: center; font-size: 11px; color: #8b949e;">'
-        '<p>🚀 Proyecto colaborativo Fundacion Dicampus</p>'
+        '<p>🚀 Proyecto colaborativo Fundación Dicampus</p>'
         '<p>© 2026 - Dashboard de Fatalidades</p>'
         '</div>',
         unsafe_allow_html=True
     )
+
+   
+
+
+
 
     return {
         "year_range": year_range,
