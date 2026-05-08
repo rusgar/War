@@ -2,10 +2,12 @@
 
 import streamlit as st
 
+datos = st.session_state.df_filtrado
+datos_original = st.session_state.df_original
 
-def render_filtered_data_section(df, df_original):
+def render_filtered_data_section(df_filtrado, df_original):
     st.subheader("🔎 Datos Filtrados")
-    st.caption(f"{len(df):,} registros mostrados de {len(df_original):,} totales")
+    st.caption(f"{len(df_filtrado):,} registros mostrados de {len(df_original):,} totales")
 
     cols_display = [
         "name",
@@ -17,18 +19,20 @@ def render_filtered_data_section(df, df_original):
         "type_of_injury",
         "killed_by",
     ]
-    available = [c for c in cols_display if c in df.columns]
+    available = [c for c in cols_display if c in df_filtrado.columns]
 
     st.dataframe(
-        df[available].reset_index(drop=True),
+        df_filtrado[available].reset_index(drop=True),
         use_container_width=True,
         height=350,
     )
 
     st.download_button(
         label="⬇️ Descargar datos filtrados (CSV)",
-        data=df[available].to_csv(index=False).encode("utf-8"),
+        data=df_filtrado[available].to_csv(index=False).encode("utf-8"),
         file_name="fatalities_filtered.csv",
         mime="text/csv",
     )
     
+
+render_filtered_data_section(datos, datos_original)

@@ -1,7 +1,6 @@
 # Info
-Se a creado un archivo copia de app.py llamado appwow.py para modularizar y mover las funciones del archivo original app.py. Con el fin de tener un codigo mas limpio y de mejor legibilidad.
+Este archivo se ha creado con el fin de tener un codigo mas limpio y mdularizado que orquestra las secciones mostradas abajo.
 
-Archivo copia creada
 
 **appwow.py**
 
@@ -14,3 +13,5 @@ Archivos creados en pages/
 - render_demography_section.py
 - render_geography_section.py
 - render_killed_by_section.py
+- render_stats_section.py
+- render_chart_scatter_3d.py

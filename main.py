@@ -6,7 +6,7 @@ def run_app():
     # Es útil para entornos que requieren un punto de entrada .py estándar
     try:
         print("Iniciando la aplicación de Streamlit...")
-        os.system("streamlit run app.py")
+        os.system("python -m streamlit run src/app.py")
     except KeyboardInterrupt:
         print("\nAplicación detenida por el usuario.")
     except Exception as e:
