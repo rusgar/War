@@ -105,26 +105,84 @@ def render_sidebar(df: pd.DataFrame) -> dict:
 
     # --- SECCIÓN DE COLABORADORES ---
     st.sidebar.markdown("---")
-    st.sidebar.markdown("### 👥 Colaboradores")
+    st.sidebar.markdown("### 👥 Equipo de Desarrollo")
+    st.sidebar.markdown("*Dashboard Colaborativo*")
+    st.sidebar.markdown("---")
+    
     
     colaboradores = [
-        {"nombre": "Edu Rus", "github": "https://github.com/rusgar", "rol": "Docente"},
-        {"nombre": "Carlos", "github": "https://github.com/carlosbarrientosarias27-star", "rol": "feature/pipelines"},
-        {"nombre": "Israel", "github": "https://github.com/israelscr-prog", "rol": "Modularización y testing"},
-        {"nombre": "Angel", "github": "https://github.com/kindred-98", "rol": "feature/visualizaciones,backend"},
-        {"nombre": "Andres", "github": "https://github.com/zombiradiactivo", "rol": "Unificación de código y "},
+        {
+            "nombre": "Edu Rus",
+            "github": "rusgar",  # Reemplaza con usuario real
+            "rol": "Docente / Team Lead",
+            "icono": "👨‍🏫",
+            "badge": "leader",
+            "contribucion": "Dirección del proyecto y supervisión"
+        },
+        {
+            "nombre": "Carlos",
+            "github": "carlosbarrientosarias27-star", 
+            "rol": "Feature Pipelines",
+            "icono": "🔧",
+            "badge": "pipeline",
+            "contribucion": "Implementación de pipelines de datos"
+        },
+        {
+            "nombre": "Israel",
+            "github": "israelscr-prog", 
+            "rol": "Modularización & Testing",
+            "icono": "🧪",
+            "badge": "pipeline",
+            "contribucion": "Estructura modular y pruebas unitarias"
+        },
+        {
+            "nombre": "Ángel",
+            "github": "kindred-98",
+            "rol": "Visualizaciones & Backend",
+            "icono": "📊",
+            "badge": "vis",
+            "contribucion": "Gráficos interactivos y lógica backend"
+        },
+        {
+            "nombre": "Andrés",
+            "github": "zombiradiactivo",  # Reemplaza con usuario real
+            "rol": "Unificación & Integración",
+            "icono": "🦄",
+            "badge": "unify",
+            "contribucion": "Integración de componentes y orquestación"
+        }
     ]
     
     
     for colab in colaboradores:
+        badge_class = f"member-badge role-{colab['badge']}" if colab['badge'] != "leader" else "member-badge role-leader"
+        
         st.sidebar.markdown(
-            f'<a href="https://github.com/{colab["github"]}" target="_blank" class="colab-link">'
-            f'<img src="https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png" class="github-icon">'
-            f'<span class="colab-name">{colab["nombre"]}</span>'
+            f'<div class="team-container">'
+            f'<a href="https://github.com/{colab["github"]}" target="_blank" style="text-decoration: none;">'
+            f'<div class="team-member">'
+            f'<div class="member-icon">{colab["icono"]}</div>'
+            f'<div class="member-info">'
+            f'<span class="member-name">{colab["nombre"]}'
+            f'<span class="{badge_class}">{colab["rol"]}</span>'
+            f'</span>'
+            f'<span class="member-role">📌 {colab["contribucion"]}</span>'
+            f'</div>'
+            f'</div>'
             f'</a>'
-            f'<div class="colab-rol">{colab["rol"]}</div>',
+            f'</div>',
             unsafe_allow_html=True
-        ) 
+        )
+    
+    # Footer
+    st.sidebar.markdown("---")
+    st.sidebar.markdown(
+        '<div style="text-align: center; font-size: 11px; color: #8b949e;">'
+        '<p>🚀 Proyecto colaborativo Fundacion Dicampus</p>'
+        '<p>© 2026 - Dashboard de Fatalidades</p>'
+        '</div>',
+        unsafe_allow_html=True
+    )
 
     return {
         "year_range": year_range,
