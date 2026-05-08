@@ -16,15 +16,25 @@ def render_sidebar(df: pd.DataFrame) -> dict:
     _handle_csv_upload(df)
     st.sidebar.markdown("Ajusta los parámetros para filtrar los datos.")
 
-     # --- IMAGEN PORTADA ---
+         # --- IMAGEN PORTADA ---
     portada_path = Path("src/filters/img/Portada.png")
     
     if portada_path.exists():
-        st.sidebar.image(str(portada_path), caption="📸 Portada", use_container_width=True)
-        st.sidebar.markdown("---")
+        try:
+            # Intentar con diferentes parámetros según la versión de Streamlit
+            try:
+                st.sidebar.image(str(portada_path), caption="📸 Portada", use_container_width=True)
+            except TypeError:
+                try:
+                    st.sidebar.image(str(portada_path), caption="📸 Portada", use_column_width=True)
+                except TypeError:
+                    st.sidebar.image(str(portada_path), caption="📸 Portada")
+            st.sidebar.markdown("---")
+        except Exception as e:
+            st.sidebar.error(f"Error al cargar imagen: {str(e)}")
+            st.sidebar.markdown("---")
     else:
-        st.sidebar.warning("⚠️ No se encontró la imagen 'filters/img/Portada.png'")
-        st.sidebar.markdown("---")
+        st.sidebar.markdown("---")  # Silencioso, sin warning
     
     # 1. Definimos la función de limpieza (Callback)
     def reset_all_filters():
@@ -93,3 +103,5 @@ def render_sidebar(df: pd.DataFrame) -> dict:
         "region": region,
         "killed_by": killed_by,
     }
+ 
+     
