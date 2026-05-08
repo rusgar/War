@@ -181,7 +181,14 @@ def main():
     except NotImplementedError:
         st.info("⚙️ feature/visualization: chart_killed_by pendiente (Día 3)")
 
-    # ── Seccion 5: Estadisticas y exportacion ─────────────────────────────────
+    # ── Seccion 5: Scatter 3D ──────────────────────────────────────────────────
+    st.subheader("⚠️ Scatter 3D: año vs mes vs edad")
+    try:
+        st.plotly_chart(chart_scatter_3d(df), use_container_width=True)
+    except NotImplementedError:
+        st.info("⚙️ feature/visualization: chart_scatter_3d pendiente (Día 4)")
+
+    # ── Seccion 6: Estadisticas y exportacion ─────────────────────────────────
     st.subheader("📊 Estadísticas Descriptivas")
     try:
         stats = compute_descriptive_stats(df)
@@ -200,7 +207,7 @@ def main():
     except NotImplementedError:
         st.info("⚙️ feature/pipeline: compute_descriptive_stats pendiente")
 
-    # ── Seccion 6: Tabla de datos ─────────────────────────────────────────────
+    # ── Seccion 7: Tabla de datos ─────────────────────────────────────────────
     st.subheader("🔎 Datos Filtrados")
     st.caption(f"{len(df):,} registros mostrados de {len(df_original):,} totales")
 
