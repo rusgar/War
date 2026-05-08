@@ -32,7 +32,7 @@ from src.charts.chart_killed_by import chart_killed_by
 from src.charts.chart_monthly_heatmap import chart_monthly_heatmap
 from src.charts.chart_gender_breakdown import chart_gender_breakdown
 from src.charts.chart_scatter_3d import chart_scatter_3d
-from src.charts.chart_geopandas import render_chart_top_locations
+from src.charts.chart_geopandas import render_two
 from src.stats.compute_descriptive_stats import compute_descriptive_stats
 from src.stats.export_stats_to_json import export_stats_to_json
 
@@ -210,7 +210,7 @@ def main():
         "📍 Top ubicaciones": chart_top_locations,
         "⚠️ Causa de fatalidad": chart_killed_by,
         "🔮 Scatter 3D (año/mes/edad)": chart_scatter_3d,
-        "🔮 Geopandas": render_chart_top_locations,
+        "🔮 Geopandas": render_two,
 
     }
 
@@ -218,7 +218,15 @@ def main():
 
     try:
         chart_func = chart_options[selected_chart]
-        st.plotly_chart(chart_func(st.session_state.df_filtrado), use_container_width=True, key=f"chart_{selected_chart}")
+        
+        if selected_chart == "🔮 Geopandas":
+            # Llamamos a la función directamente sin st.plotly_chart
+            # porque render_two ya usa st.plotly_chart internamente
+            chart_func(st.session_state.df_filtrado)
+        else:
+            # Para las demás que sí devuelven una sola figura
+            fig = chart_func(st.session_state.df_filtrado)
+            st.plotly_chart(fig, use_container_width=True, key=f"chart_{selected_chart}")
     except NotImplementedError:
         st.info(f"⚙️ {selected_chart} pendiente")
 

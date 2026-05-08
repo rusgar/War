@@ -16,13 +16,13 @@ def log_chart_rendered(log: logging.Logger, chart_name: str, rows: int, rows_ren
         log.debug("CHART_RENDERED | chart=%s | rows_used=%d", chart_name, rows)
 
 
-def get_chart_logger(name: str = "charts") -> logging.Logger:
-    """Crea y devuelve un logger específico para gráficos."""
-    logger = logging.getLogger(name)
-    if not logger.handlers:
-        logger.setLevel(logging.DEBUG)
-        formatter = logging.Formatter(LOG_FORMAT, datefmt=DATE_FORMAT)
-        console_handler = logging.StreamHandler()
-        console_handler.setFormatter(formatter)
-        logger.addHandler(console_handler)
-    return logger
+# def get_chart_logger(name: str = "charts") -> logging.Logger:
+#     """Crea y devuelve un logger específico para gráficos."""
+#     logger = logging.getLogger(name)
+#     if not logger.handlers:
+#         logger.setLevel(logging.DEBUG)
+#         formatter = logging.Formatter(LOG_FORMAT, datefmt=DATE_FORMAT)
+#         console_handler = logging.StreamHandler()
+#         console_handler.setFormatter(formatter)
+#         logger.addHandler(console_handler)
+#     return logger
