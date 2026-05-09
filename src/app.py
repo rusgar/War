@@ -32,7 +32,7 @@ from src.charts.chart_killed_by import chart_killed_by
 from src.charts.chart_monthly_heatmap import chart_monthly_heatmap
 from src.charts.chart_gender_breakdown import chart_gender_breakdown
 from src.charts.chart_scatter_3d import chart_scatter_3d
-from src.charts.chart_geopandas import render_two
+from src.charts.chart_geospatial import render_two
 from src.stats.compute_descriptive_stats import compute_descriptive_stats
 from src.stats.export_stats_to_json import export_stats_to_json
 
@@ -210,7 +210,7 @@ def main():
         "📍 Top ubicaciones": chart_top_locations,
         "⚠️ Causa de fatalidad": chart_killed_by,
         "🔮 Scatter 3D (año/mes/edad)": chart_scatter_3d,
-        "🔮 Geopandas": render_two,
+        "🗺️ Mapa geoespacial": render_two,
 
     }
 
