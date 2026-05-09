@@ -163,9 +163,10 @@ Fecha de última actualización: 06/05/2026
 | `render_sidebar.py` | ✅ Funcional | Filtros, imagen portada |
 | `combine_data()` | ✅ Funcional | Combina CSVs adicionales |
 | Gráficos básicos | ✅ Funcional | Todos los charts importan bien |
-| Estructura `src/pages/` | ⚠️ Parcial | Existen pero no integrados al 100% |
-| Tests | ❌ No pasan | Varios tests en skip o fallando |
-| GitHub Actions (CI) | ❌ No funciona | Pipeline incompleto/roto |
+| Estructura `src/sections/`|✅ Funcional | Integrados al 100%|
+| Tests | ✅ Funcional |Tests hechos en 08.05.26 pasan |
+| GitHub Actions (CI) |✅ Funcional | Pipeline completo |
+| Cambio en `chart_geopandas.py`|⚠️ En proceso de creacion |Integracion interactual de heat map de Palestina|
 
 ---
 
@@ -294,3 +295,10 @@ Guardar cambios a CSV o archivo local
 
 Reflejar cambios inmediatamente en gráficos
 Fecha de última actualización: 07/05/2026
+
+# Decisiones técnicas del proyecto
+
+**Proyecto:** War Analytics Dashboard  
+**Fecha final:** 09/05/2026  
+**Rama estable:** `integration` (v1.0.0)  
+**Estado:** ✅ Todos los tests pasan (117 passed) · CI/CD verde · Dashboard funcional

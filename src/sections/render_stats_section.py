@@ -4,12 +4,13 @@ import streamlit as st
 from src.stats.compute_descriptive_stats import compute_descriptive_stats
 from src.stats.export_stats_to_json import export_stats_to_json
 
+datos = st.session_state.df_filtrado
 
-def render_stats_section(df):
+def render_stats_section(df_filtrado):
     st.subheader("📊 Estadísticas Descriptivas")
 
     try:
-        stats = compute_descriptive_stats(df)
+        stats = compute_descriptive_stats(df_filtrado)
 
         col_s1, col_s2, col_s3 = st.columns(3)
 
@@ -28,3 +29,6 @@ def render_stats_section(df):
 
     except NotImplementedError:
         st.info("⚙️ feature/pipeline: compute_descriptive_stats pendiente")
+
+
+render_stats_section(datos)
