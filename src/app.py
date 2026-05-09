@@ -10,7 +10,7 @@ ESTADO: Proporcionado por el profesor como esqueleto de integracion.
 Ejecutar: streamlit run app.py
 """
 # Añadir el directorio raíz al path de Python (NECESARIO PARA STREAMLIT CLOUD)
-
+# ruff: noqa: E402
 import sys
 import os
 root_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
