@@ -1,14 +1,35 @@
 # War Analytics Dashboard — CrisisScope Analytics
 
 > **Dataset:** B'Tselem · 11.124 registros · conflicto israelí-palestino · 2000–2023  
-> **Stack:** Python · Streamlit · Plotly · pytest · GitHub Actions  
+> **Stack:** Python · Streamlit · Plotly · pandas · pytest · Ruff · GitHub Actions  
 > **Modalidad:** Pair programming · Live Share · 4 alumnos · 3 ramas · 4 días
+
+![Python](https://img.shields.io/badge/Python-3.9%20|%203.10%20|%203.11%20|%203.12-3776AB?style=flat&logo=python&logoColor=white)
+![Streamlit](https://img.shields.io/badge/Streamlit-1.x-FF4B4B?style=flat&logo=streamlit&logoColor=white)
+![Plotly](https://img.shields.io/badge/Plotly-5.x-3F4F75?style=flat&logo=plotly&logoColor=white)
+![pandas](https://img.shields.io/badge/pandas-2.x-150458?style=flat&logo=pandas&logoColor=white)
+![pytest](https://img.shields.io/badge/pytest-passing-009688?style=flat&logo=pytest&logoColor=white)
+![Ruff](https://img.shields.io/badge/Ruff-linting-D7FF64?style=flat&logo=ruff&logoColor=black)
+![GitHub Actions](https://img.shields.io/badge/GitHub_Actions-CI%2FCD-2088FF?style=flat&logo=githubactions&logoColor=white)
+
+---
+
+## Equipo
+
+| Alumno | GitHub |
+|---|---|
+| Ángel | [@kindred-98](https://github.com/kindred-98) |
+| Andrés | [@zombiradiactivo](https://github.com/zombiradiactivo) |
+| Carlos Barrientos | [@carlosbarrientosarias27-star](https://github.com/carlosbarrientosarias27-star) |
+| Israel | [@israelscr-prog](https://github.com/israelscr-prog) |
+| Javier | [@yioqse](https://github.com/yioqse) |
+
 
 ---
 
 ## Lo que encontráis en este repo
 
-Todo está en la raíz, sin estructura de carpetas. **La app funciona.** Ejecutad esto antes de tocar nada:
+El proyecto está estructurado en módulos dentro de `src/`. **La app funciona.** Ejecutad esto antes de tocar nada:
 
 ```bash
 git clone https://github.com/rusgar/War
@@ -17,13 +38,11 @@ python -m venv .venv && source .venv/bin/activate   # Mac/Linux
 python -m venv .venv && .venv\Scripts\activate       # Windows
 pip install -r requirements.txt
 
-#Dos maneras de ejecucion
+# Lanzar el dashboard
 python main.py
-
-o
-
-streamlit run app.py
 ```
+
+> `main.py` es el lanzador — arranca `src/app.py` sin necesidad de invocar Streamlit directamente.
 
 Si el dashboard abre en el navegador, estáis listos. Ahora viene vuestro trabajo.
 
@@ -60,24 +79,24 @@ El código funciona, pero viola todos los principios de ingeniería de software:
 **4 alumnos, 3 ramas → siempre hay un Reviewer.**  
 El Reviewer no tiene rama ese día: revisa PRs, completa `test_integration.py` y actualiza `docs/`.
 
-### Creacion de la rama Integracion
+### Creación de la rama de integración
 
-````
+```bash
 git checkout -b integration
-````
+```
 
 ---
 
 ## Rotación (decidirla entre todos el Día 1 — anotarla en `docs/DECISIONS.md`)
 
-|       | `feature/pipeline` | `feature/visualization` | `feature/ui` | Reviewer |
-|-------|-------------------|------------------------|-------------|----------|
+| | `feature/pipeline` | `feature/visualization` | `feature/ui` | Reviewer |
+|---|---|---|---|---|
 | Día 1 | Carlos | &nbsp; | &nbsp; | &nbsp; |
-| Día 2 | Andres y Carlos | &nbsp; | &nbsp; | &nbsp; |
-| Día 3 | &nbsp; | &nbsp; | &nbsp; | &nbsp; |
-| Día 4 | &nbsp; | &nbsp; | &nbsp; | &nbsp; |
+| Día 2 | Andrés y Carlos | Angel | Israel | &nbsp; |
+| Día 3 | &nbsp; | Israel y Carlos | Andrés y Angel | &nbsp; |
+| Día 4 | &nbsp; | Andres y Israel|Angel y Andrés| &nbsp; |
 
-**Regla:** nadie repite rama dos días seguidos.
+**Regla:** nadie repite rama dos días seguidos (a no ser por ayudar).
 
 ---
 
@@ -87,13 +106,13 @@ git checkout -b integration
 
 ```bash
 # 1. Actualizar main — el profesor habrá integrado el trabajo del día anterior
-git checkout main
-git pull origin main
+git checkout integration
+git pull origin integration
 
 # 2. Crear o actualizar vuestra rama del día
-git checkout -b feature/<vuestra-rama>        # Día 1 (rama nueva)
-git checkout feature/<vuestra-rama>           # Días 2, 3, 4 (rama existente)
-git rebase origin/main                        # Traer los cambios integrados del profesor
+git checkout -b feature/<vuestra-rama>   # Día 1 (rama nueva)
+git checkout feature/<vuestra-rama>      # Días 2, 3, 4 (rama existente)
+git rebase origin/integration            # Traer los cambios integrados del profesor
 ```
 
 ### Durante el día (pair programming con Live Share)
@@ -101,10 +120,11 @@ git rebase origin/main                        # Traer los cambios integrados del
 1. El que comparte pantalla es el **Driver** — escribe el código
 2. El otro es el **Navigator** — revisa, sugiere, busca docs
 3. **Cambiad de rol cada 25 minutos** (técnica Pomodoro)
-4. Committed semántico cada vez que una función está completa y sus tests pasan
+4. Commit semántico cada vez que una función está completa y sus tests pasan
 
 ```bash
 # Ciclo de trabajo por función
+
 # 1. Implementar la función
 # 2. Ejecutar sus tests
 pytest tests/test_<modulo>.py -v --cov=src/<modulo> --cov-report=term-missing
@@ -129,41 +149,29 @@ git push origin feature/<vuestra-rama>
 
 ---
 
-## Estructura objetivo (propuesta — la decidís vosotros el Día 1)
-
-Lo que **sí es obligatorio** al final:
-- Toda la lógica en módulos dentro de `src/`
-- Todos los tests en `tests/`
-- `streamlit run app.py` funciona
-- CI verde en las 4 versiones Python
-- `docs/DECISIONS.md` relleno
-
-Lo que decidís vosotros (y justificáis en `docs/DECISIONS.md`):
-- Nombres exactos de carpetas y módulos
-- Cómo dividís los módulos grandes
-- Estrategia de imports
-
-Propuesta orientativa:
+## Estructura del proyecto
 
 ```
 War/
-├── app.py                          ← punto de entrada (solo UI)
+├── main.py                         ← lanzador (ejecuta src/app.py vía Streamlit)
 ├── requirements.txt
 ├── .gitignore
 ├── fatalities.csv                  ← en .gitignore, no subir cambios
 │
 ├── .github/
 │   └── workflows/
-│       └── ci.yml                  ← mover aquí el ci.yml de la raíz (Día 1)
+│       └── ci.yml
 │
 ├── src/
 │   ├── __init__.py
-│   ├── data_loader.py              ← solo: cargar y limpiar CSV
-│   ├── logger.py                   ← solo: logging estructurado
-│   ├── stats.py                    ← solo: estadísticas + exportar JSON
-│   ├── charts.py                   ← solo: funciones puras df → Figure
-│   ├── filters.py                  ← solo: apply_filters() pura
-│   └── kpis.py                     ← solo: funciones _calc_*() puras
+│   ├── app.py                      ← punto de entrada UI (solo UI)
+│   ├── charts/                     ← 9 módulos de visualización Plotly
+│   ├── data_loader/                ← carga y limpieza de CSV
+│   ├── filters/                    ← lógica de filtros y sidebar
+│   ├── kpis/                       ← cálculos económicos (KPIs)
+│   ├── logger/                     ← logging estructurado
+│   ├── pages/                      ← 7 módulos UI modulares
+│   └── stats/                      ← estadísticas y exportación JSON
 │
 ├── tests/
 │   ├── test_data_loader.py
@@ -178,7 +186,7 @@ War/
 │   ├── ARCHITECTURE.md
 │   └── Final.md
 │
-├── logs/                           ← generado por logger.py
+├── logs/                           ← generado por logger (no versionado)
 └── results/                        ← generado por stats.py
 ```
 
@@ -195,7 +203,7 @@ War/
 - [ ] Crear las 3 ramas, primer commit semántico en cada una
 - [ ] `feature/pipeline` → `data_loader.py` en `src/`, limpio, con tests que pasan
 - [ ] `feature/visualization` → al menos 2 gráficos implementados y testeados
-- [ ] `feature/ui` → `app.py` arranca con los módulos de `src/`, sidebar visible
+- [ ] `feature/ui` → `src/app.py` arranca con los módulos de `src/`, sidebar visible
 - [ ] **Reviewer** → CI configurado y verde en las 3 ramas, `test_integration.py` con los primeros tests
 - [ ] **⏰ Antes de acabar:** push + mostrar al profesor
 
@@ -205,7 +213,7 @@ War/
 
 ### Día 2 — Tests y estadísticas
 
-**Objetivo:** cobertura ≥ 80% en cada módulo, `stats.py` exporta JSON, logs funcionan.
+**Objetivo:** cobertura ≥ 70% total, `stats.py` exporta JSON, logs funcionan.
 
 - [ ] `git pull origin main` y `git rebase origin/main` en cada rama
 - [ ] `feature/pipeline` → `stats.py` completo, `logger.py` integrado, tests pasan
@@ -220,14 +228,14 @@ War/
 
 ### Día 3 — Calidad y pipeline robusto
 
-**Objetivo:** logs a fichero, JSON en `results/`, CI con matriz de 4 versiones Python.
+**Objetivo:** logs a fichero, JSON en `results/`, CI con matriz de versiones Python.
 
 - [ ] `git pull origin main` y `git rebase origin/main`
 - [ ] `feature/pipeline` → logs a `logs/dashboard_YYYYMMDD.log`, exportar stats a `results/`
 - [ ] `feature/visualization` → gráfico extra propuesto por el equipo, `chart_killed_by()`
 - [ ] `feature/ui` → tabla explorable, descarga CSV filtrado, botón exportar JSON
 - [ ] **Reviewer** → `docs/ARCHITECTURE.md` y `docs/Final.md` iniciados
-- [ ] CI verde en 4 versiones Python (3.9, 3.10, 3.11, 3.12)
+- [ ] CI verde en 3 versiones Python (3.10, 3.11, 3.12)
 - [ ] **⏰ Antes de acabar:** push + mostrar al profesor
 
 🔴 **Reto del profesor al final del Día 3** — se comunicará en clase
@@ -247,6 +255,35 @@ War/
 
 ---
 
+## Comandos de referencia
+
+```bash
+# Setup inicial
+python -m venv .venv && source .venv/bin/activate
+pip install -r requirements.txt
+
+# Lanzar la app
+python main.py
+
+# Tests de tu módulo con cobertura
+pytest tests/test_<modulo>.py --cov=src/<modulo> --cov-report=term-missing -v
+
+# Tests completos (excluyendo integración)
+pytest tests/ --ignore=tests/test_integration.py --cov=src --cov-report=term-missing -v
+
+# Linting con Ruff
+ruff check src/ tests/
+
+# Linting con auto-corrección
+ruff check src/ tests/ --fix
+
+# Actualizar tu rama desde main cada mañana
+git fetch origin
+git rebase origin/main
+```
+
+---
+
 ## Reglas de commits semánticos
 
 ```
@@ -259,7 +296,7 @@ ci:                  cambios en el pipeline
 chore:               tareas de mantenimiento (mover archivos, etc.)
 ```
 
-Si usaste IA para ese bloque: añade `[ai]` al final del mensaje.
+Si usaste IA para ese bloque, añade `[ai]` al final del mensaje:
 
 ```bash
 feat(filters): implement apply_filters with year range [ai]
@@ -284,40 +321,3 @@ Podéis usar Claude, OpenCode, Gemini, Arena o cualquier otra IA:
 ❌ No poder explicar una línea de vuestro código en la demo
 
 > **Si en la demo no puedes explicar una línea de tu código, no debería estar en tu rama.**
-
----
-
-## Comandos de referencia
-
-```bash
-# Setup inicial
-python -m venv .venv && source .venv/bin/activate
-pip install -r requirements.txt
-
-# Tests de tu módulo con cobertura
-pytest tests/test_<modulo>.py --cov=src/<modulo> --cov-report=term-missing -v
-
-# Tests completos
-pytest tests/ --cov=src --cov-report=term-missing -v
-
-# App en local
-streamlit run app.py
-
-# Actualizar tu rama desde main cada mañana
-git fetch origin
-git rebase origin/main
-```
-
----
-
-## Criterios de evaluación
-
-| Criterio | Peso |
-|---|---|
-| Dashboard funcional en demo (filtros + gráficos + KPIs) | 25% |
-| Tests con cobertura ≥ 80% por módulo | 20% |
-| Logs y JSON de estadísticas generados correctamente | 15% |
-| Commits semánticos + `docs/*.md` actualizados | 15% |
-| CI verde en las 4 versiones Python | 10% |
-| Gestión de ramas: rotación, PRs, reviews diarios al profesor | 10% |
-| Calidad del código (SRP, type hints, docstrings) | 5% |

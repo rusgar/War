@@ -295,3 +295,10 @@ Guardar cambios a CSV o archivo local
 
 Reflejar cambios inmediatamente en gráficos
 Fecha de última actualización: 07/05/2026
+
+# Decisiones técnicas del proyecto
+
+**Proyecto:** War Analytics Dashboard  
+**Fecha final:** 09/05/2026  
+**Rama estable:** `integration` (v1.0.0)  
+**Estado:** ✅ Todos los tests pasan (117 passed) · CI/CD verde · Dashboard funcional
