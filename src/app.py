@@ -16,31 +16,32 @@ import os
 root_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 if root_dir not in sys.path:
     sys.path.insert(0, root_dir)
-import streamlit as st
+import streamlit as st  # noqa: E402
+
 
 
 # Estas importaciones asumen que habeis creado la carpeta src/
 # Adaptad la ruta si vuestra estructura es diferente
-from src.data_loader.load_data import load_data
-from src.data_loader.combine_data import combine_data
+from src.data_loader.load_data import load_data # noqa: E402
+from src.data_loader.combine_data import combine_data # noqa: E402
 
 
-from src.logger.setup_logger import setup_logger
-from src.filters.render_sidebar import render_sidebar
-from src.filters.apply_filters import  apply_filters
-from src.kpis.render_kpis import render_kpis
+from src.logger.setup_logger import setup_logger # noqa: E402
+from src.filters.render_sidebar import render_sidebar # noqa: E402
+from src.filters.apply_filters import  apply_filters # noqa: E402
+from src.kpis.render_kpis import render_kpis # noqa: E402
 
-from src.charts.chart_fatalities_over_time import chart_fatalities_over_time
-from src.charts.chart_age_distribution import chart_age_distribution
-from src.charts.chart_by_region import chart_by_region
-from src.charts.chart_top_locations import chart_top_locations
-from src.charts.chart_killed_by import chart_killed_by
-from src.charts.chart_monthly_heatmap import chart_monthly_heatmap
-from src.charts.chart_gender_breakdown import chart_gender_breakdown
-from src.charts.chart_scatter_3d import chart_scatter_3d
-from src.charts.chart_geospatial import render_two
-from src.stats.compute_descriptive_stats import compute_descriptive_stats
-from src.stats.export_stats_to_json import export_stats_to_json
+from src.charts.chart_fatalities_over_time import chart_fatalities_over_time # noqa: E402
+from src.charts.chart_age_distribution import chart_age_distribution # noqa: E402
+from src.charts.chart_by_region import chart_by_region # noqa: E402
+from src.charts.chart_top_locations import chart_top_locations # noqa: E402
+from src.charts.chart_killed_by import chart_killed_by # noqa: E402
+from src.charts.chart_monthly_heatmap import chart_monthly_heatmap # noqa: E402
+from src.charts.chart_gender_breakdown import chart_gender_breakdown # noqa: E402
+from src.charts.chart_scatter_3d import chart_scatter_3d # noqa: E402
+from src.charts.chart_geospatial import render_two # noqa: E402
+from src.stats.compute_descriptive_stats import compute_descriptive_stats # noqa: E402
+from src.stats.export_stats_to_json import export_stats_to_json # noqa: E402
 
 
 # ── Configuracion ─────────────────────────────────────────────────────────────
