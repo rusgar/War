@@ -9,7 +9,13 @@ ESTADO: Proporcionado por el profesor como esqueleto de integracion.
 
 Ejecutar: streamlit run app.py
 """
+# Añadir el directorio raíz al path de Python (NECESARIO PARA STREAMLIT CLOUD)
 
+import sys
+import os
+root_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+if root_dir not in sys.path:
+    sys.path.insert(0, root_dir)
 import streamlit as st
 
 
