@@ -128,7 +128,7 @@ def chart_monthly_heatmap(df: pd.DataFrame) -> "go.Figure":
     pivot = pivot.reindex(columns=range(1, 13), fill_value=0)
 
     # --- DEFINE AQUÍ TU COLOR FAVORITO ---
-    MI_COLOR_FAVORITO = "#2C3E50"  # Puedes usar 'black', 'blue', '#HEX', etc.
+    # MI_COLOR_FAVORITO = "#2C3E50"  # Puedes usar 'black', 'blue', '#HEX', etc.
     # -------------------------------------
 
     # 2. Configuración del Heatmap

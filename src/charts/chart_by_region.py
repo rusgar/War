@@ -51,11 +51,8 @@
 
 import pandas as pd
 import plotly.express as px
-import plotly.graph_objects as go
 
 from src.charts.constants import PALETTE
-from src.logger.get_chart_logger import get_chart_logger
-from src.logger.log_chart_rendered import log_chart_rendered
 
 def chart_by_region(df: pd.DataFrame):
     """

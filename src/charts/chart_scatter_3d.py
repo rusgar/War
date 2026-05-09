@@ -78,8 +78,6 @@ import pandas as pd
 import plotly.express as px
 
 from src.charts.constants import MONTHS_ES
-from src.logger.get_chart_logger import get_chart_logger
-from src.logger.log_chart_rendered import log_chart_rendered
 
 def chart_scatter_3d(df: pd.DataFrame):
     # 1. Preparación de datos (Igual que antes)
@@ -100,7 +98,7 @@ def chart_scatter_3d(df: pd.DataFrame):
     # En lugar de un sample aleatorio de todo el DF, vamos a proteger a American y Jordanian
     # para que no desaparezcan si son pocos registros.
     
-    target_citizens = ["American", "Jordanian", "Israeli", "Palestinian"]
+    # target_citizens = ["American", "Jordanian", "Israeli", "Palestinian"]
     
     # Separamos los grupos
     minoritarios = df_plot[df_plot["citizenship"].isin(["American", "Jordanian"])]

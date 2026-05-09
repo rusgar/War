@@ -1,12 +1,10 @@
 import pandas as pd
 import plotly.express as px
 import streamlit as st
-import time
 from geopy.geocoders import Nominatim
 from geopy.extra.rate_limiter import RateLimiter
-from src.charts.constants import PALETTE, VIVID_COLORS
-from src.logger.get_chart_logger import get_chart_logger
-from src.logger.log_chart_rendered import log_chart_rendered
+from src.charts.constants import VIVID_COLORS
+# from src.logger.get_chart_logger import get_chart_logger
 
 # --- CONFIGURACIÓN DE GEOPY ---
 # Inicializamos el geolocalizador (Nominatim usa OpenStreetMap)
@@ -100,7 +98,7 @@ def get_coordinates(location_name: str):
 
 def render_chart_top_locations(df: pd.DataFrame):
     """Renderiza el gráfico de barras horizontales."""
-    logger = get_chart_logger()
+    # logger = get_chart_logger()
     if df is None or df.empty:
         return None
     
