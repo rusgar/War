@@ -226,14 +226,12 @@ def main():
     try:
         chart_func = chart_options[selected_chart]
         
-        if selected_chart == "🔮 Geopandas":
-            # Llamamos a la función directamente sin st.plotly_chart
-            # porque render_two ya usa st.plotly_chart internamente
-            chart_func(st.session_state.df_filtrado)
-        else:
-            # Para las demás que sí devuelven una sola figura
-            fig = chart_func(st.session_state.df_filtrado)
-            st.plotly_chart(fig, use_container_width=True, key=f"chart_{selected_chart}")
+        # ✅ SOLUCIÓN: Llamar a la función y guardar el resultado
+        result = chart_func(st.session_state.df_filtrado)
+    
+    # ✅ Solo mostrar con st.plotly_chart si el resultado NO es None
+        if result is not None:
+         st.plotly_chart(result, use_container_width=True, key=f"chart_{selected_chart}")    
     except NotImplementedError:
         st.info(f"⚙️ {selected_chart} pendiente")
 
