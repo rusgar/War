@@ -186,24 +186,24 @@ def main():
         st.info("⚙️ feature/pipeline: compute_descriptive_stats pendiente")
 
     # # ── Seccion 7: Tabla de datos ─────────────────────────────────────────────
-    # st.subheader("🔎 Datos Filtrados")
-    # st.caption(f"{len(st.session_state.df_original):,} registros mostrados de {len(df_filtrado):,} totales")
+    st.subheader("🔎 Datos Filtrados")
+    st.caption(f"{len(st.session_state.df_original):,} registros mostrados de {len(df_filtrado):,} totales")
 
-    # cols_display = [
-    #     "name", "date_of_event", "age", "gender",
-    #     "citizenship", "event_location_region",
-    #     "type_of_injury", "killed_by",
-    # ]
-    # available = [c for c in cols_display if c in df_filtrado.columns]
-    # st.dataframe(df_filtrado[available].reset_index(drop=True), use_container_width=True, height=350)
+    cols_display = [
+        "name", "date_of_event", "age", "gender",
+        "citizenship", "event_location_region",
+        "type_of_injury", "killed_by",
+    ]
+    available = [c for c in cols_display if c in df_filtrado.columns]
+    st.dataframe(df_filtrado[available].reset_index(drop=True), use_container_width=True, height=350)
 
-    # # Boton de descarga
-    # st.download_button(
-    #     label="⬇️ Descargar datos filtrados (CSV)",
-    #     data=df_filtrado[available].to_csv(index=False).encode("utf-8"),
-    #     file_name="fatalities_filtered.csv",
-    #     mime="text/csv",
-    # )
+    # Boton de descarga
+    st.download_button(
+        label="⬇️ Descargar datos filtrados (CSV)",
+        data=df_filtrado[available].to_csv(index=False).encode("utf-8"),
+        file_name="fatalities_filtered.csv",
+        mime="text/csv",
+    )
 
 # ── Seccion 8: Selector de graficos ─────────────────────────────────────
     st.subheader("📊 Visualizador de Gráficos")
