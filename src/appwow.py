@@ -29,6 +29,7 @@ from src.sections.render_temporal_section import render_temporal_section
 from src.sections.render_demography_section import render_demography_section
 from src.sections.render_geography_section import render_geography_section
 from src.sections.render_killed_by_section import render_killed_by_section
+from src.sections.render_chart_geospatial import render_chart_geospatial
 from src.sections.render_stats_section import render_stats_section
 from src.sections.render_chart_scatter_3d import render_chart_scatter_3d
 
@@ -57,49 +58,81 @@ def get_data():
 # ── App ───────────────────────────────────────────────────────────────────────
 
 def main():
+
     df_original = get_data()
-
-    # Combinar con datos adicionales si existen
-    df_combined = combine_data(df_original)
-
-    if len(df_combined) > len(df_original):
-        st.info(f"📊 Datos combinados: {len(df_combined)} registros (originales: {len(df_original)})")
-
+    st.session_state.df_original = df_original
+    st.session_state.df_publico = combine_data(df_original)
 
     # Sidebar y filtros - pasar datos combinados para reflejar cambios
-    filters = render_sidebar(df_combined)
-    df = apply_filters(df_combined, filters)
+    filters = render_sidebar(st.session_state.df_publico)
+    df_filtrado = apply_filters(st.session_state.df_publico, filters)
+
+    st.session_state.df_filtrado = df_filtrado
+
+    if len(st.session_state.df_publico) > len(st.session_state.df_original):
+        st.info(f"📊 Datos combinados: {len(st.session_state.df_publico)} registros (originales: {len(st.session_state.df_original)})")
 
     #Cabecera
     render_header_section()
 
     # KPIs
     try:
-        render_kpis(df, df_original)
+        render_kpis(st.session_state.df_filtrado, st.session_state.df_original)
     except NotImplementedError:
         st.info("⚙️ feature/ui: render_kpis pendiente")
     st.markdown("---")
 
-    #Temporal
-    render_temporal_section(df)
 
-    #Demografía
-    render_demography_section(df)
+    st.subheader("📊 Visualizador de Gráficos")
 
-    #Geografía
-    render_geography_section(df)
+    chart_options = {
+        "📅 Evolución temporal + 📊 Heatmap mensual": render_temporal_section,
+        "👤 Distribución por edad + 🚻 Desglose por género": render_demography_section,
+        "🗺️ Por región + 📍 Top ubicaciones": render_geography_section,
+        "⚠️ Causa de fatalidad": render_killed_by_section,
+        "🔮 Scatter 3D (año/mes/edad)": render_chart_scatter_3d,
+        "🗺️ Mapa geoespacial": render_chart_geospatial,
 
-    #Killed by
-    render_killed_by_section(df)
+    }
 
-    #Renderizar gráfico 3D
-    render_chart_scatter_3d(df)
+    selected_chart = st.selectbox("Selecciona una gráfica:", list(chart_options.keys()))
+
+    try:
+        chart_func = chart_options[selected_chart]
+        
+        chart_func(st.session_state.df_filtrado)
+        
+    except NotImplementedError:
+        st.info(f"⚙️ {selected_chart} pendiente")
+
+
+
+
+
+
+    # #Temporal
+    # render_temporal_section(df_filtrado)
+
+    # #Demografía
+    # render_demography_section(df_filtrado)
+
+    # #Geografía
+    # render_geography_section(df_filtrado)
+
+    # #Killed by
+    # render_killed_by_section(df_filtrado)
+
+    # #Renderizar gráfico 3D
+    # render_chart_scatter_3d(df_filtrado)
+
+    # #Gráfico tabla y mapa
+    # render_chart_geospatial(df_filtrado)
 
     #Estadísticas y exportación
-    render_stats_section(df)
+    render_stats_section(df_filtrado)
 
     #Tabla de datos
-    render_filtered_data_section(df, df_original)
+    render_filtered_data_section(df_filtrado, df_original)
 
 if __name__ == "__main__":
     main()

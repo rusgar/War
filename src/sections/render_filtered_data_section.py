@@ -2,8 +2,6 @@
 
 import streamlit as st
 
-datos = st.session_state.df_filtrado
-datos_original = st.session_state.df_original
 
 def render_filtered_data_section(df_filtrado, df_original):
     st.subheader("🔎 Datos Filtrados")
@@ -33,6 +31,3 @@ def render_filtered_data_section(df_filtrado, df_original):
         file_name="fatalities_filtered.csv",
         mime="text/csv",
     )
-    
-
-render_filtered_data_section(datos, datos_original)

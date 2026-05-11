@@ -3,7 +3,6 @@ import streamlit as st
 from src.charts.chart_age_distribution import chart_age_distribution
 from src.charts.chart_gender_breakdown import chart_gender_breakdown
 
-datos = st.session_state.df_filtrado
 
 def render_demography_section(df_filtrado):
     st.subheader("👥 Demografía")
@@ -22,4 +21,3 @@ def render_demography_section(df_filtrado):
             st.info("⚙️ feature/visualization: chart_gender_breakdown pendiente")
 
 
-render_demography_section(datos)

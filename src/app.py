@@ -219,7 +219,7 @@ def main():
     try:
         chart_func = chart_options[selected_chart]
         
-        if selected_chart == "🔮 Geopandas":
+        if selected_chart == "🗺️ Mapa geoespacial":
             # Llamamos a la función directamente sin st.plotly_chart
             # porque render_two ya usa st.plotly_chart internamente
             chart_func(st.session_state.df_filtrado)

@@ -1,11 +1,12 @@
-from src.charts.chart_scatter_3d import chart_scatter_3d
 import streamlit as st
 
+from src.charts.chart_geospatial import render_two
 
-def render_chart_scatter_3d(df_filtrado):
+
+def render_chart_geospatial(df_filtrado):
     st.subheader("⚠️ Scatter 3D: año vs mes vs edad")
     try:
-        st.plotly_chart(chart_scatter_3d(df_filtrado), use_container_width=True)
+        render_two(df_filtrado)
     except NotImplementedError:
         st.info("⚙️ feature/visualization: chart_scatter_3d pendiente (Día 4)")
 
